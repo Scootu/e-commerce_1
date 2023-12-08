@@ -1,5 +1,5 @@
 # For commints 😀️
-(1....X) is depend in numbers of components (or partes)
+(1....X) is depend in numbers of components (or partes).
 F : (FrontEnd stage) prerarsing phase (1 .... X) (resource pachages , assets and information for building website ...etc ) 
 H : Stade 1 (html css stage) (1....X) 
 J : Stade 2 (add functionality to components ) (html css stage) (1....X)
