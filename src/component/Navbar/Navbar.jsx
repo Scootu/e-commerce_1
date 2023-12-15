@@ -1,10 +1,16 @@
 import React, { useState } from "react";
+import { Link, useLoaderData, useParams } from "react-router-dom";
 export default function NavBar() {
   const [cMenuTypes, setCMenuTypes] = useState(false);
-  let i = 0;
+  const [cLinkClass, setClinkType] = useState(false);
   function ifMouseLeave() {
     setCMenuTypes(false);
   }
+  const { params } = useParams();
+  const data = useLoaderData();
+  console.log("params : ", params, "data", data);
+  const menuClassLinks = "uppercase hover:text-slate-600";
+
   const classTypeMenu =
     "flex flex-col px-6 py-4 absolute bg-white border uppercase ";
   let hiddenClassTypeMenu = `${
@@ -41,20 +47,20 @@ export default function NavBar() {
         </div>
         <div className="flex flex-row items-center">
           <ul className="list-none flex gap-x-3  pr-4">
-            <li>
-              <a href="#" className="uppercase hover:text-slate-600">
+            <li onClick={() => {}}>
+              <Link to={"/"} className="uppercase hover:text-slate-600">
                 Home
-              </a>
+              </Link>
             </li>
             <li>
-              <a href="#" className="uppercase hover:text-slate-600">
+              <Link to={"account"} className="uppercase hover:text-slate-600">
                 my account
-              </a>
+              </Link>
             </li>
             <li>
-              <a href="#" className="uppercase hover:text-slate-600">
+              <Link to={"contact"} className="uppercase hover:text-slate-600">
                 contact
-              </a>
+              </Link>
             </li>
             <li
               className="relative transition uppercase hover:text-slate-600"
@@ -63,30 +69,25 @@ export default function NavBar() {
               }}
               onMouseLeave={ifMouseLeave}
             >
-              <a
-                href="#"
-                className="flex items-center"
-                aria-expanded="true"
-                aria-haspopup="menu"
-              >
+              <Link to={"/"} className="flex items-center">
                 Planter pots types
                 <span className="material-symbols-outlined">expand_more</span>
-              </a>
+              </Link>
               <ul className={hiddenClassTypeMenu}>
                 <li className=" py-2 border-b w-48">
-                  <a href="#" className="text-slate-900">
+                  <Link to="/" className="text-slate-900">
                     Terracotta Pots
-                  </a>
+                  </Link>
                 </li>
                 <li className="py-2 border-b w-48">
-                  <a href="#" className="text-slate-900">
+                  <Link to="/" className="text-slate-900">
                     Plastic Pots
-                  </a>
+                  </Link>
                 </li>
                 <li className=" py-2 border-b w-48">
-                  <a href="#" className="text-slate-900">
+                  <Link to="/" className="text-slate-900">
                     Ceramic Pots
-                  </a>
+                  </Link>
                 </li>
               </ul>
             </li>
