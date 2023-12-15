@@ -4,5 +4,17 @@ export default {
   theme: {
     extend: {},
   },
-  plugins: [],
+  plugins: [
+    function ({ addUtilities }) {
+      const newUtilities = {
+        ".btn": {
+          padding: "2px 10px",
+          border: "1px solid #000",
+          cursor: "pointer",
+          borderRadius: "11px",
+        },
+      };
+      addUtilities(newUtilities, ["responsive", "hover"]);
+    },
+  ],
 };
