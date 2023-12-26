@@ -52,6 +52,12 @@ export default function NavBar() {
               </Link>
               <hr className={cLinkClass == "home" ? hrClassTypeMenu : "opacity-0 invisible pointer-events-none"}></hr>
             </li>
+            <li onClick={() => { setClinkType("shop") }}>
+              <Link to={"shop"} className="uppercase hover:text-slate-600">
+                shop
+              </Link>
+              <hr className={cLinkClass == "shop" ? hrClassTypeMenu : "opacity-0 invisible pointer-events-none"}></hr>
+            </li>
             <li
               className="relative transition uppercase hover:text-slate-600"
               onMouseOver={() => {
@@ -61,7 +67,7 @@ export default function NavBar() {
               onClick={() => { setClinkType("planter") }}
             >
               <Link to={"/account"} className="flex items-center">
-                Planter pots types
+                account
                 <span className="material-symbols-outlined">expand_more</span>
               </Link>
               <hr className={cLinkClass == "planter" ? hrClassTypeMenu : "opacity-0 invisible pointer-events-none"}></hr>
