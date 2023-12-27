@@ -6,33 +6,33 @@ export const CartContent = () => {
       <div className="container mx-auto px-4">
         <div className="text-center mb-12">
           <h2 className="text-4xl font-bold">Our Services</h2>
-          <div className="mt-4 inline-block h-1 w-24 bg-green-400" />
+          <div className="mt-4 inline-block h-1 w-24 bg-green-600" />
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          <div className="flex flex-col items-center text-center">
-            <WebcamIcon className="mb-4 h-12 w-12 text-green-400" />
+          <div className="flex flex-col items-center text-center transition duration-500 ease-in-out bg-white hover:bg-green-600 hover:text-white shadow-lg p-4 rounded-lg">
+            <WebcamIcon className="mb-4 h-12 w-12" />
             <h3 className="mb-2 text-xl font-semibold">Custom Planters</h3>
-            <p className="text-gray-600">Tailor-made designs to fit your space perfectly.</p>
+            <p className="text-gray-600 hover:text-white">Tailor-made designs to fit your space perfectly.</p>
           </div>
-          <div className="flex flex-col items-center text-center">
-            <TargetIcon className="mb-4 h-12 w-12 text-green-400" />
+          <div className="flex flex-col items-center text-center transition duration-500 ease-in-out bg-white hover:bg-green-600 hover:text-white shadow-lg p-4 rounded-lg">
+            <TargetIcon className="mb-4 h-12 w-12" />
             <h3 className="mb-2 text-xl font-semibold">Eco-Friendly Materials</h3>
-            <p className="text-gray-600">Sustainable and durable options for conscious gardening.</p>
+            <p className="text-gray-600 hover:text-white">Sustainable and durable options for conscious gardening.</p>
           </div>
-          <div className="flex flex-col items-center text-center">
-            <ImageIcon className="mb-4 h-12 w-12 text-green-400" />
+          <div className="flex flex-col items-center text-center transition duration-500 ease-in-out bg-white hover:bg-green-600 hover:text-white shadow-lg p-4 rounded-lg">
+            <ImageIcon className="mb-4 h-12 w-12" />
             <h3 className="mb-2 text-xl font-semibold">Gardening Tips</h3>
-            <p className="text-gray-600">Expert advice for thriving plants.</p>
+            <p className="text-gray-600 hover:text-white">Expert advice for thriving plants.</p>
           </div>
-          <div className="flex flex-col items-center text-center">
-            <ActivityIcon className="mb-4 h-12 w-12 text-green-400" />
+          <div className="flex flex-col items-center text-center transition duration-500 ease-in-out bg-white hover:bg-green-600 hover:text-white shadow-lg p-4 rounded-lg">
+            <ActivityIcon className="mb-4 h-12 w-12" />
             <h3 className="mb-2 text-xl font-semibold">Outdoor & Indoor Options</h3>
-            <p className="text-gray-600">Find the perfect pot for any environment.</p>
+            <p className="text-gray-600 hover:text-white">Find the perfect pot for any environment.</p>
           </div>
-          <div className="flex flex-col items-center text-center">
-            <NetworkIcon className="mb-4 h-12 w-12 text-green-400" />
+          <div className="flex flex-col items-center text-center transition duration-500 ease-in-out bg-white hover:bg-green-600 hover:text-white shadow-lg p-4 rounded-lg">
+            <NetworkIcon className="mb-4 h-12 w-12" />
             <h3 className="mb-2 text-xl font-semibold">Community Workshops</h3>
-            <p className="text-gray-600">Join events to learn and share gardening experiences.</p>
+            <p className="text-gray-600 hover:text-white">Join events to learn and share gardening experiences.</p>
           </div>
         </div>
       </div>
@@ -149,5 +149,3 @@ function WebcamIcon(props) {
     </svg>
   )
 }
-
-  
