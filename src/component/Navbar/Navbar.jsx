@@ -6,17 +6,18 @@ export default function NavBar() {
   function ifMouseLeave() {
     setCMenuTypes(false);
   }
-  // const { params } = useParams(); dynamic router 
+  // const { params } = useParams(); dynamic router
 
   const menuClassLinks = "uppercase hover:text-slate-600";
 
   const classTypeMenu =
     "flex flex-col px-6 py-4 absolute bg-white border uppercase z-10";
-  let hiddenClassTypeMenu = `${!cMenuTypes
-    ? classTypeMenu + " opacity-0 invisible pointer-events-none"
-    : classTypeMenu
-    }`;
-  let hrClassTypeMenu = 'h-1.5 bg-red-500 rounded';
+  let hiddenClassTypeMenu = `${
+    !cMenuTypes
+      ? classTypeMenu + " opacity-0 invisible pointer-events-none"
+      : classTypeMenu
+  }`;
+  let hrClassTypeMenu = "h-1.5 bg-red-500 rounded";
   return (
     <header className="shadow-lg w-full">
       <div className="flex flex-row px-6 py-6 items-center justify-around max-w-7xl m-auto gap-x-3">
@@ -46,17 +47,37 @@ export default function NavBar() {
         </div>
         <div className="flex flex-row items-center">
           <ul className="list-none flex gap-x-3  pr-4">
-            <li onClick={() => { setClinkType("home") }}>
+            <li
+              onClick={() => {
+                setClinkType("home");
+              }}
+            >
               <Link to={"/"} className="uppercase hover:text-slate-600">
                 Home
               </Link>
-              <hr className={cLinkClass == "home" ? hrClassTypeMenu : "opacity-0 invisible pointer-events-none"}></hr>
+              <hr
+                className={
+                  cLinkClass == "home"
+                    ? hrClassTypeMenu
+                    : "opacity-0 invisible pointer-events-none"
+                }
+              ></hr>
             </li>
-            <li onClick={() => { setClinkType("shop") }}>
+            <li
+              onClick={() => {
+                setClinkType("shop");
+              }}
+            >
               <Link to={"shop"} className="uppercase hover:text-slate-600">
                 shop
               </Link>
-              <hr className={cLinkClass == "shop" ? hrClassTypeMenu : "opacity-0 invisible pointer-events-none"}></hr>
+              <hr
+                className={
+                  cLinkClass == "shop"
+                    ? hrClassTypeMenu
+                    : "opacity-0 invisible pointer-events-none"
+                }
+              ></hr>
             </li>
             <li
               className="relative transition uppercase hover:text-slate-600"
@@ -64,14 +85,30 @@ export default function NavBar() {
                 setCMenuTypes(true);
               }}
               onMouseLeave={ifMouseLeave}
-              onClick={() => { setClinkType("planter") }}
+              onClick={() => {
+                setClinkType("planter");
+              }}
             >
               <Link to={"/account"} className="flex items-center">
                 account
                 <span className="material-symbols-outlined">expand_more</span>
               </Link>
-              <hr className={cLinkClass == "planter" ? hrClassTypeMenu : "opacity-0 invisible pointer-events-none"}></hr>
+              <hr
+                className={
+                  cLinkClass == "planter"
+                    ? hrClassTypeMenu
+                    : "opacity-0 invisible pointer-events-none"
+                }
+              ></hr>
               <ul className={hiddenClassTypeMenu}>
+                <li className=" py-2 border-b w-48">
+                  <Link to="/" className="text-slate-900 flex items-center ">
+                    Basket
+                    <span className="material-symbols-outlined">
+                      shopping_basket
+                    </span>
+                  </Link>
+                </li>
                 <li className=" py-2 border-b w-48">
                   <Link to="/" className="text-slate-900 flex items-center ">
                     Watchlist
@@ -90,11 +127,21 @@ export default function NavBar() {
                 </li>
               </ul>
             </li>
-            <li onClick={() => { setClinkType("contact") }}>
+            <li
+              onClick={() => {
+                setClinkType("contact");
+              }}
+            >
               <Link to={"contact"} className="uppercase hover:text-slate-600">
                 contact
               </Link>
-              <hr className={cLinkClass == "contact" ? hrClassTypeMenu : "opacity-0 invisible pointer-events-none"}></hr>
+              <hr
+                className={
+                  cLinkClass == "contact"
+                    ? hrClassTypeMenu
+                    : "opacity-0 invisible pointer-events-none"
+                }
+              ></hr>
             </li>
           </ul>
           <div>

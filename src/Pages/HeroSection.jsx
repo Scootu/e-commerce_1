@@ -1,5 +1,6 @@
 import React, { Fragment } from "react";
-import { CartContent } from "./content/CartContent";
+import { CartContent } from "../component/content/CartContent";
+import { FeaturedProducts } from "./FeaturedProducts";
 export const HeroSection = () => {
   const styles = {
     backgroundImage: "url(src/assets/hero_sectino_2024_800.png)",
@@ -32,6 +33,7 @@ export const HeroSection = () => {
         </div>
       </div>
       <CartContent />
+      <FeaturedProducts />
     </Fragment>
   );
 };

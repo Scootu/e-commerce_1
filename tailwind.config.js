@@ -4,8 +4,15 @@ export default {
   theme: {
     extend: {
       minHeight: {
-        '128': '34.375rem'
-      }
+        128: "34.375rem",
+      },
+      height: {
+        128: "296px",
+        144: "492px",
+      },
+      textColor: {
+        "text-blinder": "#46474a",
+      },
     },
   },
   plugins: [
