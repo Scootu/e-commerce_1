@@ -12,6 +12,7 @@ export const FeaturedProducts = () => {
           category={item.category}
           price={item.prices[0].price}
           img={item.images[0]}
+          reviews={item.reviews}
         />
       </swiper-slide>
     );
