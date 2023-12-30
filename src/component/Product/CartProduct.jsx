@@ -2,10 +2,8 @@ import React, { useState } from "react";
 import { Link, NavLink } from "react-router-dom";
 
 export const CartProduct = ({ id, img, category, title, price, reviews }) => {
-  const [activeLinkCart, setActiveLinkCart] = useState(false);
-  const cLinkCart =
-    " border uppercase bg-slate-500 px-2 py-1 text-white hover:text-slate-300 relative";
-  const vCart = " text-black font-bold ";
+  const [activeLinkCart, setActiveLinkCart] = useState("Add to cart");
+  const [classLinkBtn, setClassLinkBtn] = useState("link-btn");
 
   return (
     <div className="border shadow px-4 py-4">
@@ -28,27 +26,32 @@ export const CartProduct = ({ id, img, category, title, price, reviews }) => {
           </div>
         </div>
       </Link>
-
-      {
-        <button
-          className={!activeLinkCart ? cLinkCart : ""}
-          onClick={() => {
-            setActiveLinkCart(true);
-          }}
-        >
-          Add to Cart
-          <div className="border w-2 h-2 bg-transparent"></div>
-        </button>
-      }
-      {
-        <NavLink
-          to={"/"}
-          className="flex items-center gap-1 font-bold text-slate-800 hover:text-slate-500"
-        >
-          See Cart
-          <span className="material-symbols-outlined">trending_flat</span>
-        </NavLink>
-      }
+      <div className="h-[40px] w-full relative">
+        {
+          <button
+            className={classLinkBtn}
+            onClick={() => {
+              setActiveLinkCart(<div className="loader"></div>);
+              setTimeout(() => {
+                setActiveLinkCart(
+                  <NavLink
+                    to={"/cart/product/4145"}
+                    className="flex items-center gap-1 font-bold text-slate-800 hover:text-slate-500"
+                  >
+                    See Cart
+                    <span className="material-symbols-outlined">
+                      trending_flat
+                    </span>
+                  </NavLink>
+                );
+                setClassLinkBtn("link-btn-active");
+              }, 2000);
+            }}
+          >
+            {activeLinkCart}
+          </button>
+        }
+      </div>
     </div>
   );
 };

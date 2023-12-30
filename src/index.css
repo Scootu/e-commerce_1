@@ -16,3 +16,10 @@ html {
 .material-symbols-outlined {
   font-variation-settings: "FILL" 0, "wght" 400, "GRAD" 0, "opsz" 24;
 }
+
+.link-btn {
+  @apply grid justify-center items-center border uppercase text-white bg-slate-500 px-2 py-1  hover:text-slate-300 w-[130px] h-[34px];
+}
+.loader {
+  @apply animate-spin left-[50px] border-2 border-white w-5 h-5 bg-transparent rounded-full border-t-slate-500;
+}

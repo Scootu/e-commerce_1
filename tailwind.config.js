@@ -1,8 +1,23 @@
 /** @type {import('tailwindcss').Config} */
+
 export default {
   content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
   theme: {
     extend: {
+      animation: {
+        wiggle: "wiggle 1s ease-in-out forwards",
+        oWiggle: "oWiggle 2s ease-in-out forwards",
+      },
+      keyframes: {
+        oWiggle: {
+          from: { opacity: "0" },
+          to: { opacity: "1" },
+        },
+        wiggle: {
+          from: { opacity: "1" },
+          to: { opacity: "0", visibility: "hidden", position: "absolute" },
+        },
+      },
       minHeight: {
         128: "34.375rem",
       },
