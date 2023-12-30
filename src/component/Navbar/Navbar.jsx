@@ -110,6 +110,17 @@ export default function NavBar() {
                   </Link>
                 </li>
                 <li className=" py-2 border-b w-48">
+                  <Link
+                    to="/checkout"
+                    className="text-slate-900 flex items-center "
+                  >
+                    Order now
+                    <span className="material-symbols-outlined">
+                      local_shipping
+                    </span>
+                  </Link>
+                </li>
+                <li className=" py-2 border-b w-48">
                   <Link to="/" className="text-slate-900 flex items-center ">
                     Watchlist
                     <span className="material-symbols-outlined">
