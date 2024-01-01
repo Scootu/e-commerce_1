@@ -6,14 +6,7 @@ export const FeaturedProducts = () => {
   const swiperSlides = data.map((item) => {
     return (
       <swiper-slide key={item.id}>
-        <CartProduct
-          id={item.id}
-          title={item.name}
-          category={item.category}
-          price={item.prices[0].price}
-          img={item.images[0]}
-          reviews={item.reviews}
-        />
+        <CartProduct props={item} />
       </swiper-slide>
     );
   });

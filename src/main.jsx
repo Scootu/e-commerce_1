@@ -6,6 +6,9 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { HeroSection } from "./Pages/HeroSection.jsx";
 // import function to register Swiper custom elements
 import { register } from "swiper/element/bundle";
+import store from "./store/store.js";
+import { Provider } from "react-redux";
+import { Cart } from "./Pages/Cart.jsx";
 // register Swiper custom elements
 register();
 const router = createBrowserRouter([
@@ -32,11 +35,17 @@ const router = createBrowserRouter([
         path: "/shop",
         element: <h1>shop</h1>,
       },
+      {
+        path: "/cart",
+        element: <Cart />,
+      },
     ],
   },
 ]);
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
-    <RouterProvider router={router} />
+    <Provider store={store}>
+      <RouterProvider router={router} />
+    </Provider>
   </React.StrictMode>
 );

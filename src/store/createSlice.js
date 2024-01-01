@@ -1,16 +1,17 @@
 import { createSlice } from "@reduxjs/toolkit";
 
+const initialState = {
+  data: [],
+};
 export const dataSlice = createSlice({
-  name: "productsData",
-  initialState: {
-    data: [],
-  },
+  name: "data",
+  initialState: initialState,
   reducers: {
     getProductData: (state, action) => {
-      state.data = [];
+      state.data.push(action.payload);
     },
   },
 });
+console.log(dataSlice.actions.getProductData("hello adn welcom"));
+// {type: "counter/increment"}
 export const { getProductData } = dataSlice.actions;
-
-export default dataSlice.reducer;

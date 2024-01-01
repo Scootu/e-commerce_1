@@ -102,7 +102,10 @@ export default function NavBar() {
               ></hr>
               <ul className={hiddenClassTypeMenu}>
                 <li className=" py-2 border-b w-48">
-                  <Link to="/" className="text-slate-900 flex items-center ">
+                  <Link
+                    to="/cart"
+                    className="text-slate-900 flex items-center "
+                  >
                     Cart
                     <span className="material-symbols-outlined">
                       shopping_basket
