@@ -166,6 +166,7 @@ export default function NavBar() {
             </li>
             <li>
               <div>
+                <div></div>
                 <FontAwesomeIcon
                   icon={faCartShopping}
                   className="cursor-pointer"
