@@ -1,12 +1,7 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-// import { icon, regular } from "@fortawesome/fontawesome-svg-core/import.macro"; <-- it's doesn't work in vites
-// import { icon } from "@fortawesome/fontawesome-svg-core/import.macro";
-import { faCartShopping } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-// import { library } from "@fortawesome/fontawesome-svg-core";
-// library.add(faCartShopping);
-// library.add(faCartShopping);
+import { CartShopping } from "../CartShopping/CartShopping";
+
 export default function NavBar() {
   const [cMenuTypes, setCMenuTypes] = useState(false);
   const [cLinkClass, setClinkType] = useState("home");
@@ -164,15 +159,7 @@ export default function NavBar() {
                 }
               ></hr>
             </li>
-            <li>
-              <div>
-                <div></div>
-                <FontAwesomeIcon
-                  icon={faCartShopping}
-                  className="cursor-pointer"
-                />
-              </div>
-            </li>
+            <CartShopping />
           </ul>
         </div>
       </div>
