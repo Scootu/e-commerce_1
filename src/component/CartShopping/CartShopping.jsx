@@ -14,7 +14,7 @@ export const CartShopping = () => {
         setShowPanier(true);
       }}
       onMouseLeave={() => {
-        setShowPanier(true);
+        setShowPanier(false);
       }}
       className="relative"
     >
@@ -22,11 +22,12 @@ export const CartShopping = () => {
         <div className="counter absolute top-0">{counter}</div>
         <FontAwesomeIcon icon={faCartShopping} className="cursor-pointer" />
       </div>
+      <div></div>
       {showPanier && (
         <div className="absolute right-0 min-w-[260px] z-10 border shadow bg-white p-5 text-[#777] max-h-0 table text-center">
           <ul>{content}</ul>
           {!counter == 0 && (
-            <div className="">
+            <div className="py-0">
               <button className="block">See Cart</button>
               <button className="block">Order now!</button>
             </div>
