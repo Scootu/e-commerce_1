@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCartShopping } from "@fortawesome/free-solid-svg-icons";
 
 export const CartShopping = () => {
-  const [showPanier, setShowPanier] = useState(true);
+  const [showPanier, setShowPanier] = useState(false);
   const [content, setContent] = useState(
     <li className="text-[18px] ">Your cart is empty.</li>
   );
@@ -18,13 +18,14 @@ export const CartShopping = () => {
       }}
       className="relative"
     >
-      <div className="relative">
-        <div className="counter absolute top-0">{counter}</div>
-        <FontAwesomeIcon icon={faCartShopping} className="cursor-pointer" />
+      <div className="relative cursor-pointer ">
+        <div className="absolute top-[-10px] right-[-12px] px-[2px] bg-[#f8d7a4] rounded-md">
+          {counter}
+        </div>
+        <FontAwesomeIcon icon={faCartShopping} />
       </div>
-      <div></div>
       {showPanier && (
-        <div className="absolute right-0 min-w-[260px] z-10 border shadow bg-white p-5 text-[#777] max-h-0 table text-center">
+        <div className="absolute smouthTran right-0 min-w-[260px] z-10 border shadow bg-white p-5 text-[#777] max-h-0 table text-center ">
           <ul>{content}</ul>
           {!counter == 0 && (
             <div className="py-0">

@@ -4,6 +4,9 @@ export default {
   content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
   theme: {
     extend: {
+      transitionProperty: {
+        opacity: "0.25",
+      },
       animation: {
         wiggle: "wiggle 1s ease-in-out forwards",
         oWiggle: "oWiggle 2s ease-in-out forwards",
@@ -38,6 +41,9 @@ export default {
           border: "1px solid #000",
           cursor: "pointer",
           borderRadius: "11px",
+        },
+        ".smouthTran": {
+          transition: "opacity 0.25s visibility 0.25s",
         },
       };
       addUtilities(newUtilities, ["responsive", "hover"]);
