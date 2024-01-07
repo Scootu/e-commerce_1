@@ -82,6 +82,7 @@ export default function NavBar() {
             <button className="btn hover:bg-slate-300 active:bg-slate-300">
               SignIn
             </button>
+            <div></div>
           </div>
           <div className="flex flex-row items-center">
             <ul className="list-none flex gap-x-3  pr-4">
