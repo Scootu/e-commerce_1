@@ -10,6 +10,7 @@ export default {
       animation: {
         wiggle: "wiggle 1s ease-in-out forwards",
         oWiggle: "oWiggle 2s ease-in-out forwards",
+        smouth_down: "smouth_down 0.4s ease-in-out forwards",
       },
       keyframes: {
         oWiggle: {
@@ -19,6 +20,10 @@ export default {
         wiggle: {
           from: { opacity: "1" },
           to: { opacity: "0", visibility: "hidden", position: "absolute" },
+        },
+        smouth_down: {
+          "0%": { transform: "translateY(-100%)" },
+          "100%": { transform: "transform: translateY(0)" },
         },
       },
       minHeight: {
@@ -43,7 +48,7 @@ export default {
           borderRadius: "11px",
         },
         ".smouthTran": {
-          transition: "opacity 0.25s visibility 0.25s",
+          transition: " background-color .3s,opacity .3s;",
         },
       };
       addUtilities(newUtilities, ["responsive", "hover"]);

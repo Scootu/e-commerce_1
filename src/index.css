@@ -24,7 +24,7 @@ html {
   @apply animate-spin left-[50px] border-2 border-white w-5 h-5 bg-transparent rounded-full border-t-slate-500;
 }
 .sticky {
-  @apply fixed top-0;
+  @apply fixed top-0 smouthTran animate-smouth_down;
 }
 .navbarOffsetMargin {
   @apply pt-[80px];
