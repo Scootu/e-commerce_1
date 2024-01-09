@@ -97,6 +97,7 @@ export default function NavBar() {
     <Fragment>
       {isSticky && <div className="h-[80px] w-full relative"></div>}
       <header className="shadow-lg w-full bg-white z-50" ref={navbarRef}>
+      |<div></div>
         <div className="flex flex-row px-6 py-6 items-center justify-around max-w-7xl m-auto gap-x-3">
           <div className="flex items-center relative justify-end w-52">
             <img
