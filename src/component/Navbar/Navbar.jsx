@@ -95,6 +95,7 @@ export default function NavBar() {
   }, []); // The empty dependency array ensures that this effect runs once after the initial render
   return (
     <Fragment>
+      <div></div>
       {isSticky && <div className="h-[80px] w-full relative"></div>}
       <header className="shadow-lg w-full bg-white z-50" ref={navbarRef}>
       |<div></div>
