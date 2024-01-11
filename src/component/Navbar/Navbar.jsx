@@ -27,47 +27,7 @@ export default function NavBar() {
 
   useEffect(() => {
     const navBar = navbarRef.current;
-    console.log(navBar);
-    // Create an array to store parallax elements
-    const parallaxElements = [];
 
-    // Function to add an element to the parallax array
-    const addParallaxElement = (element, type, parallaxFactor) => {
-      parallaxElements.push({
-        element: element,
-        type: type,
-        parallaxFactor: parallaxFactor,
-      });
-    };
-    //  addParallaxElement(navBar, "backgroundElement", 0.5);
-    // Function to get the parallax type of an element
-
-    // Function to calculate the parallax effect for each element
-    const updateParallax = () => {
-      parallaxElements.forEach((element) => {
-        const type = element.type;
-        const elementOffset = 600;
-        const scrollTop = window.scrollY;
-        let parallaxValue;
-
-        switch (type) {
-          case "backgroundImage":
-            parallaxValue = scrollTop * element.parallaxFactor * -1;
-            element.element.style.backgroundPosition = `50% ${parallaxValue}px`;
-            break;
-          case "backgroundElement":
-            parallaxValue =
-              scrollTop * element.parallaxFactor * -1 -
-              elementOffset.height / 2;
-            element.element.style.transform = `translate3d(0, ${parallaxValue}px, 0)`;
-            break;
-          case "element":
-            parallaxValue = scrollTop * element.parallaxFactor * -1;
-            element.element.style.transform = `translate3d(0, ${parallaxValue}px, 0)`;
-            break;
-        }
-      });
-    };
     function handleScroll() {
       let scroll = window.scrollY;
 
@@ -82,23 +42,15 @@ export default function NavBar() {
 
     // Add event listeners for scroll and resize events
     window.addEventListener("scroll", handleScroll);
-    // window.addEventListener("resize", updateParallax);
 
-    // Add all parallax elements to the array
-
-    // Update the parallax effect initially
-    // updateParallax();
     return () => {
-      // window.removeEventListener("scroll", updateParallax);
-      // window.removeEventListener("resize", updateParallax);
+      window.removeEventListener("scroll", handleScroll);
     };
   }, []); // The empty dependency array ensures that this effect runs once after the initial render
   return (
     <Fragment>
-      <div></div>
       {isSticky && <div className="h-[80px] w-full relative"></div>}
       <header className="shadow-lg w-full bg-white z-50" ref={navbarRef}>
-      |<div></div>
         <div className="flex flex-row px-6 py-6 items-center justify-around max-w-7xl m-auto gap-x-3">
           <div className="flex items-center relative justify-end w-52">
             <img
