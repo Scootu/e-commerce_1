@@ -6,30 +6,7 @@ import { useSelector } from "react-redux";
 export const CartShopping = () => {
   const data = useSelector((state) => state.productsData.data);
   const [showPanier, setShowPanier] = useState(false);
-  const [content, setContent] = useState();
-  let productElement = data;
-  function getProductElement(data) {
-    productElement.map((item, index) => {
-      return (
-        <li key={index} className="border-b-2 h-[45x] flex items-center">
-          <div className="w-1/5">
-            <img
-              className="w-full h-full"
-              src={item.images[0]}
-              alt={item.name}
-            />
-          </div>
-          <div className="w-full">
-            <p>{item.name}</p>
-            <p>{item.prices[0].price}</p>
-          </div>
-        </li>
-      );
-    });
-  }
-  useEffect(() => {
-    getProductElement(data);
-  }, [data]);
+
   return (
     <li
       onMouseOver={() => {
@@ -48,13 +25,34 @@ export const CartShopping = () => {
       </div>
       {showPanier && (
         <div className="absolute smouthTran right-0 min-w-[260px] z-10 border shadow bg-white p-5 text-[#777] max-h-0 table text-center ">
-          {productElement.length == 0 ? (
+          {data.length == 0 ? (
             <ul>
               <li className="text-[18px] ">Your cart is empty.</li>
             </ul>
           ) : (
             <>
-              <ul>{productElement}</ul>
+              <ul>
+                {data.map((item, index) => {
+                  return (
+                    <li
+                      key={index}
+                      className="border-b-2 h-[45x] flex items-center"
+                    >
+                      <div className="w-1/5">
+                        <img
+                          className="w-full h-full"
+                          src={item.images[0]}
+                          alt={item.name}
+                        />
+                      </div>
+                      <div className="w-full">
+                        <p>{item.name}</p>
+                        <p>{item.prices[0].price}</p>
+                      </div>
+                    </li>
+                  );
+                })}
+              </ul>
               <div className="py-0">
                 <button className="block p-2 bg-slate-800 w-[120px] text-white mb-2">
                   See Cart
