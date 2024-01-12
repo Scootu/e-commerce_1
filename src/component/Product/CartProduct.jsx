@@ -17,9 +17,11 @@ export const CartProduct = (props) => {
     prices: price,
     reviews,
   } = props.props;
+
   useEffect(() => {
     checkLink(); // check if the link is clicked before
   }, []);
+
   function checkLink() {
     const flag = productsData.some((element) => element.id === id);
     if (flag === true) {
@@ -79,8 +81,8 @@ export const CartProduct = (props) => {
                   </NavLink>
                 );
                 setClassLinkBtn("link-btn-active");
+                dispatsh(getProductData(props.props));
               }, 2000);
-              dispatsh(getProductData(props.props));
             }}
           >
             {activeLinkCart}
