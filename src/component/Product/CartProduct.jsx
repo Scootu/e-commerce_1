@@ -71,7 +71,7 @@ export const CartProduct = (props) => {
               setTimeout(() => {
                 setActiveLinkCart(
                   <NavLink
-                    to={"/cart/product/4145"}
+                    to={"/product/4145"}
                     className="flex items-center gap-1 font-bold text-slate-800 hover:text-slate-500"
                   >
                     See Cart
