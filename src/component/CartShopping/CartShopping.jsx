@@ -81,9 +81,8 @@ export const CartShopping = () => {
                   <button className="block p-2 bg-red-700 w-full text-white">
                     Order now!
                   </button>
-
-                  <div></div>
                 </div>
+                <div></div>
               </>
             )}
           </div>
