@@ -9,6 +9,7 @@ import { register } from "swiper/element/bundle";
 import store from "./store/store.js";
 import { Provider } from "react-redux";
 import { Cart } from "./Pages/Cart.jsx";
+import { Product } from "./Pages/Product.jsx";
 // register Swiper custom elements
 register();
 const router = createBrowserRouter([
@@ -39,6 +40,11 @@ const router = createBrowserRouter([
         path: "/cart",
         element: <Cart />,
       },
+      {
+        path:'/product',
+        element:<Product />,
+        
+      }
     ],
   },
 ]);

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCartShopping, faXmark } from "@fortawesome/free-solid-svg-icons";
 import { useDispatch, useSelector } from "react-redux";
@@ -9,9 +9,18 @@ export const CartShopping = () => {
   const data = useSelector((state) => state.productsData.data);
   const [showPanier, setShowPanier] = useState(false);
   const dispatch = useDispatch();
-
   let styleb =
     "w-0 h-0 border-b-[11px] border-b-[#ddd] border-l-[10px] border-r-[10px] border-transparent ";
+  function checkCondition() {
+    if (data.length > 0) {
+      setShowPanier(true);
+    } else {
+      setShowPanier(false);
+    }
+  }
+  useEffect(() => {
+    checkCondition();
+  }, [data]);
   return (
     <li
       onMouseOver={() => {
@@ -31,14 +40,14 @@ export const CartShopping = () => {
       <div className={showPanier ? styleb : styleb + " opacity-0"}></div>
       {showPanier && (
         <>
-          <div className="absolute smouthTran right-0 min-w-[320px] z-10 border shadow bg-white p-5 text-[#777] max-h-0 table text-center ">
+          <div className="absolute smouthTran right-0 min-w-[320px]  z-10 border shadow bg-white p-5 text-[#777] table text-center ">
             {data.length == 0 ? (
               <ul>
                 <li className="text-[18px] ">Your cart is empty.</li>
               </ul>
             ) : (
               <>
-                <ul className="overflow-y-auto">
+                <ul className="overflow-y-scroll max-h-[320px]">
                   {data.map((item, index) => {
                     return (
                       <li
@@ -74,6 +83,20 @@ export const CartShopping = () => {
                     );
                   })}
                 </ul>
+                <div className="border-b-4 pt-2 pb-2">
+                  <span className="text-xl font-bold">Total :</span>
+                  <span className="text-black font-bold">
+                    {"$" +
+                      data
+                        .reduce(
+                          (accumulator, currentValue) =>
+                            accumulator +
+                            parseFloat(currentValue.prices[0].price),
+                          0
+                        )
+                        .toFixed(2)}
+                  </span>
+                </div>
                 <div className="py-0">
                   <button className="block p-2 bg-slate-800 w-full text-white mb-2">
                     See Cart
@@ -82,7 +105,6 @@ export const CartShopping = () => {
                     Order now!
                   </button>
                 </div>
-                <div></div>
               </>
             )}
           </div>
