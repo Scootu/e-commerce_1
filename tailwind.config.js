@@ -11,8 +11,18 @@ export default {
         wiggle: "wiggle 1s ease-in-out forwards",
         oWiggle: "oWiggle 2s ease-in-out forwards",
         smouth_down: "smouth_down 0.4s ease-in-out forwards",
+        scroll_Up: "scroll_Up 0.6s ease-in-out forwards",
       },
       keyframes: {
+        scroll_Up: {
+          from: {
+            opacity: "0.5",
+          },
+          to: {
+            opacity: "1",
+            transform: "translateY(-10%)",
+          },
+        },
         oWiggle: {
           from: { opacity: "0" },
           to: { opacity: "1" },

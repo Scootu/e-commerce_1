@@ -9,7 +9,7 @@ import { register } from "swiper/element/bundle";
 import store from "./store/store.js";
 import { Provider } from "react-redux";
 import { Cart } from "./Pages/Cart.jsx";
-import { Product } from "./Pages/Product.jsx";
+import { Products } from "./Pages/Product.jsx";
 // register Swiper custom elements
 register();
 const router = createBrowserRouter([
@@ -41,10 +41,39 @@ const router = createBrowserRouter([
         element: <Cart />,
       },
       {
-        path:'/product',
-        element:<Product />,
-        
-      }
+        path: "/products",
+        children: [
+          {
+            path: ":productId",
+            element: <Products />,
+            loader: async ({ params }) => {
+              try {
+                const response = await fetch(
+                  `http://localhost:5000/api/product/${params.productId}`
+                );
+
+                // Check if the response status is OK (200)
+                if (response.ok) {
+                  // Read the JSON content from the response body
+                  const productData = await response.json();
+                  return productData;
+                } else {
+                  console.error(
+                    "Error fetching product data:",
+                    response.statusText
+                  );
+                  // Handle the error appropriately, e.g., redirect to an error page
+                  return null;
+                }
+              } catch (error) {
+                console.error("Error fetching product data:", error);
+                // Handle the error appropriately, e.g., redirect to an error page
+                return null;
+              }
+            },
+          },
+        ],
+      },
     ],
   },
 ]);

@@ -62,14 +62,14 @@ export const CartShopping = () => {
                           }}
                         />
 
-                        <Link to={`/product/${item.id}`}>
+                        <Link to={`/products/${item.id}`}>
                           <img
                             className="absolute left-0 top-3 h-[60px] w-[60px] object-cover object-center"
                             src={item.images[0]}
                             alt={item.name}
                           />
                         </Link>
-                        <Link to={`/product/${item.id}`}>
+                        <Link to={`/products/${item.id}`}>
                           <div className="w-full">
                             <p className=" text-left text-[#334862] h-[60px] overflow-hidden leading-[1.33em]">
                               {item.name}
