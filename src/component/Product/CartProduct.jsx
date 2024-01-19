@@ -27,7 +27,7 @@ export const CartProduct = (props) => {
     if (flag === true) {
       setActiveLinkCart(
         <NavLink
-          to={"/cart/product/4145"}
+          to={`/products/${id}`}
           className="flex items-center gap-1 font-bold text-slate-800 hover:text-slate-500"
         >
           See Cart
@@ -71,7 +71,7 @@ export const CartProduct = (props) => {
               setTimeout(() => {
                 setActiveLinkCart(
                   <NavLink
-                    to={`/product/${id}`}
+                    to={`/products/${id}`}
                     className="flex items-center gap-1 font-bold text-slate-800 hover:text-slate-500"
                   >
                     See Cart
@@ -80,8 +80,10 @@ export const CartProduct = (props) => {
                     </span>
                   </NavLink>
                 );
+                if (classLinkBtn == "link-btn") {
+                  dispatsh(getProductData(props.props));
+                }
                 setClassLinkBtn("link-btn-active");
-                dispatsh(getProductData(props.props));
               }, 2000);
             }}
           >

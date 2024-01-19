@@ -75,6 +75,7 @@ export const CartShopping = () => {
                               {item.name}
                             </p>
                             <p className="text-black font-bold text-left text-xl">
+                              <span>{item.nbItems || 1} x </span>{" "}
                               {"$" + item.prices[0].price}
                             </p>
                           </div>
