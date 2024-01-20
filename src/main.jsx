@@ -16,12 +16,13 @@ const router = createBrowserRouter([
   {
     path: "/",
     element: <App />,
+    loader: async () => {
+      return await fetch("productData.json");
+    },
+    id: "root",
     children: [
       {
         path: "",
-        loader: async () => {
-          return await fetch("productData.json");
-        },
         element: <HeroSection />,
       },
       {

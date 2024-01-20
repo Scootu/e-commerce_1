@@ -1,8 +1,16 @@
-import React from "react";
-import { useLoaderData } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { useRouteLoaderData } from "react-router-dom";
 import { CartProduct } from "../component/Product/CartProduct";
 export const FeaturedProducts = () => {
-  const data = useLoaderData();
+  const [data, setData] = useState([]);
+  async function fetchData() {
+    const requeste = await fetch("productData.json");
+    const response = await requeste.json();
+    setData(response);
+  }
+  useEffect(() => {
+    fetchData();
+  }, []);
   const swiperSlides = data.map((item) => {
     return (
       <swiper-slide key={item.id}>

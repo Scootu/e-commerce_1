@@ -58,7 +58,7 @@ export const CartShopping = () => {
                           icon={faXmark}
                           className="absolute right-0 border-2 border-solid rounded-full text-gray-400 block font-bold text-center h-6 w-6 text-base leading-4 cursor-pointer"
                           onClick={() => {
-                            dispatch(removeProduct(item.id));
+                            dispatch(removeProduct({ ...item, nbItems: 0 }));
                           }}
                         />
 
@@ -92,7 +92,8 @@ export const CartShopping = () => {
                         .reduce(
                           (accumulator, currentValue) =>
                             accumulator +
-                            parseFloat(currentValue.prices[0].price),
+                            parseFloat(currentValue.prices[0].price) *
+                              currentValue.nbItems,
                           0
                         )
                         .toFixed(2)}

@@ -1,15 +1,57 @@
-import { faMinus, faPlus } from "@fortawesome/free-solid-svg-icons";
+import {
+  faMinus,
+  faObjectGroup,
+  faPlus,
+} from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { useLoaderData } from "react-router-dom";
+import {
+  getProductData,
+  modifieItemNumber,
+  removeProduct,
+} from "../store/createSlice";
 
 export const Products = () => {
   const [hoveredIndex, setHoveredIndex] = useState(null);
   const loaderData = useLoaderData();
-  console.log("loader : ", loaderData);
-  const [activeLinkCart, setActiveLinkCart] = useState("Add to cart");
-  const [classLinkBtn, setClassLinkBtn] = useState("btn-add-cart");
+  const data = useSelector((state) => state.productsData.data);
+  const [activeLinkCart, setActiveLinkCart] = useState(false);
+  const [content, setContent] = useState("Add to cart");
   const [counter, setCounter] = useState(1);
+
+  const dispatch = useDispatch();
+  useEffect(() => {
+    if (counter == 0) {
+      setContent("Add to cart");
+      dispatch(removeProduct(loaderData));
+      setCounter(1);
+    }
+    dispatch(modifieItemNumber({ id: loaderData.id, nbItems: counter }));
+  }, [counter]);
+
+  function checkFunction() {
+    let flag = false;
+    const index = data.findIndex((item) => item.id === loaderData.id);
+    if (activeLinkCart == true && counter > 0 && index == -1 && flag == false) {
+      setContent("Add to cart");
+      flag = true;
+    }
+    if (index !== -1) {
+      console.log("data is ", data);
+      console.log("remove :", counter, data[index].nbItems);
+
+      if (Object.hasOwn(data[index], "nbItems")) {
+        return data[index].nbItems == 0;
+      } else {
+        return false;
+      }
+    } else {
+      return true;
+    }
+  }
+
   return (
     <section className="max-w-7xl px-12 m-auto pt-12">
       <div className="flex">
@@ -137,32 +179,54 @@ export const Products = () => {
             <p className="text-[1.75rem] text-[#2e2f32] leading-6 font-bold mb-[1rem]">
               {"$" + loaderData.prices[0].price}
             </p>
-            <button
-              className={classLinkBtn}
-              onClick={() => {
-                if (activeLinkCart == "Add to cart") {
-                  setActiveLinkCart(<div className="loader"></div>);
-                }
-                setTimeout(() => {
-                  setActiveLinkCart(
-                    <div className="flex items-center justify-between w-full">
-                      <FontAwesomeIcon icon={faMinus} onClick={()=>{
+            {checkFunction() ? (
+              <button
+                className={"btn-add-cart"}
+                onClick={() => {
+                  setContent(<div className="loader"></div>);
 
-                      }} />
-                      <span className="text-sm font-light">
-                        {counter} x
-                        <span className="ml-1 font-bold text-white">added</span>
-                      </span>
+                  setTimeout(() => {
+                    setActiveLinkCart(true);
+                    dispatch(
+                      getProductData({ ...loaderData, nbItems: counter })
+                    );
+                  }, 2000);
+                }}
+              >
+                {content}
+              </button>
+            ) : (
+              <div className="btn-add-cart">
+                <div className={` flex items-center justify-between w-full`}>
+                  <FontAwesomeIcon
+                    icon={faMinus}
+                    onClick={() => {
+                      setCounter((prevState) => {
+                        if (prevState > 0) {
+                          return prevState - 1;
+                        } else {
+                          return 0;
+                        }
+                      });
+                    }}
+                  />
+                  <span className="text-sm font-light select-none">
+                    {counter} x
+                    <span className="ml-1 font-bold text-white">added</span>
+                  </span>
 
-                      <FontAwesomeIcon icon={faPlus} />
-                    </div>
-                  );
-                  /* dispatsh(getProductData(props.props));*/
-                }, 2000);
-              }}
-            >
-              {activeLinkCart}
-            </button>
+                  <FontAwesomeIcon
+                    icon={faPlus}
+                    onClick={() => {
+                      setCounter((prevState) => {
+                        return prevState + 1;
+                      });
+                    }}
+                  />
+                </div>
+              </div>
+            )}
+
             <hr />
           </div>
         </div>
