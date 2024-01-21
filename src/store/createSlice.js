@@ -23,7 +23,6 @@ export const dataSlice = createSlice({
       const index = state.data.findIndex(
         (item) => item.id === action.payload.id
       );
-      console.log(index);
       if (index !== -1) {
         if (Object.hasOwn(state.data[index], "nbItems")) {
           // If the key exists, update its value

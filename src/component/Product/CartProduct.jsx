@@ -81,14 +81,9 @@ export const CartProduct = (props) => {
                   </NavLink>
                 );
                 if (classLinkBtn == "link-btn") {
-                  dispatsh(getProductData(props.props));
-                  dispatsh(
-                    modifieItemNumber({
-                      id: id,
-                      nbItems: productsData.nbItems || 1,
-                    })
-                  );
+                  dispatsh(getProductData({ ...props.props, nbItems: 1 }));
                 }
+
                 setClassLinkBtn("link-btn-active");
               }, 2000);
             }}

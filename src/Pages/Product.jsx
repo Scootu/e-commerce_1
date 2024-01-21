@@ -16,14 +16,33 @@ import {
 export const Products = () => {
   const [hoveredIndex, setHoveredIndex] = useState(null);
   const loaderData = useLoaderData();
+
   const data = useSelector((state) => state.productsData.data);
   const [activeLinkCart, setActiveLinkCart] = useState(false);
   const [content, setContent] = useState("Add to cart");
   const [counter, setCounter] = useState(1);
-
+  console.log("loader : ", data);
   const dispatch = useDispatch();
+
+  useEffect(() => { // this solve the bugs and handle the ui as expected or (want) الحمد لله (it's mean thank god)
+    if (
+      data.some((item) => {
+        return item.id === loaderData.id;
+      })
+    ) {
+      // const index = data.findIndex((item) => item.id === loaderData.id);
+      setActiveLinkCart(true);
+      const index = data.findIndex((item) => item.id === loaderData.id);
+
+      setCounter(data[index].nbItems);
+    } else {
+      setCounter(0);
+    }
+  }, [data]);
+
   useEffect(() => {
     if (counter == 0) {
+      setActiveLinkCart(false);
       setContent("Add to cart");
       dispatch(removeProduct(loaderData));
       setCounter(1);
@@ -31,7 +50,7 @@ export const Products = () => {
     dispatch(modifieItemNumber({ id: loaderData.id, nbItems: counter }));
   }, [counter]);
 
-  function checkFunction() {
+  function checkFunction() {  // a big shi*
     let flag = false;
     const index = data.findIndex((item) => item.id === loaderData.id);
     if (activeLinkCart == true && counter > 0 && index == -1 && flag == false) {
@@ -179,7 +198,7 @@ export const Products = () => {
             <p className="text-[1.75rem] text-[#2e2f32] leading-6 font-bold mb-[1rem]">
               {"$" + loaderData.prices[0].price}
             </p>
-            {checkFunction() ? (
+            {!activeLinkCart ? (
               <button
                 className={"btn-add-cart"}
                 onClick={() => {
