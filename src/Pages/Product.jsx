@@ -245,7 +245,7 @@ export const Products = () => {
                 </div>
               </div>
             )}
-            <hr />
+            
             <hr />
           </div>
         </div>
