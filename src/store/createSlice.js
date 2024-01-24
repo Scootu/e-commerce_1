@@ -8,7 +8,19 @@ export const dataSlice = createSlice({
   initialState: initialState,
   reducers: {
     getProductData: (state, action) => {
-      state.data.push(action.payload);
+      let productData = action.payload;
+      const getElem = productData.prices.findIndex((elem) => {
+        return elem.size === productData.initialSize;
+      });
+      console.log(productData.prices, "index", getElem);
+      if (getElem != -1 && getElem != 0) {
+        const initialElem = productData.prices[0];
+        productData.prices[0] = productData.prices[getElem];
+        productData.prices[getElem] = initialElem;
+
+        // [state.data[index].prices[getElem], state.data[index].prices[0]] = [state.data[index].prices[0], action.payload.item];
+      }
+      state.data.push(productData);
     },
     removeProduct: (state, action) => {
       const index = state.data.findIndex(
@@ -36,9 +48,30 @@ export const dataSlice = createSlice({
         }
       }
     },
+    changeItemPosition(state, action) {
+      const index = state.data.findIndex((elem) => {
+        return elem.id == action.payload.id;
+      });
+      if (index != -1) {
+        const getElem = state.data[index].prices.findIndex((elem) => {
+          return elem.size === action.payload.item.size;
+        });
+        if (getElem != -1 && getElem != 0) {
+          const initialElem = state.data[index].prices[0];
+          state.data[index].prices[0] = action.payload.item;
+          state.data[index].prices[getElem] = initialElem;
+          console.log(state.data[index].prices);
+          // [state.data[index].prices[getElem], state.data[index].prices[0]] = [state.data[index].prices[0], action.payload.item];
+        }
+      }
+    },
   },
 });
 
 // {type: "counter/increment"}
-export const { getProductData, removeProduct, modifieItemNumber } =
-  dataSlice.actions;
+export const {
+  getProductData,
+  removeProduct,
+  modifieItemNumber,
+  changeItemPosition,
+} = dataSlice.actions;

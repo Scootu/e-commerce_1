@@ -8,6 +8,7 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useLoaderData } from "react-router-dom";
 import {
+  changeItemPosition,
   getProductData,
   modifieItemNumber,
   removeProduct,
@@ -16,15 +17,17 @@ import {
 export const Products = () => {
   const [hoveredIndex, setHoveredIndex] = useState(null);
   const loaderData = useLoaderData();
-
   const data = useSelector((state) => state.productsData.data);
   const [activeLinkCart, setActiveLinkCart] = useState(false);
   const [content, setContent] = useState("Add to cart");
   const [counter, setCounter] = useState(1);
+  const [sCaracter, setScaracter] = useState(loaderData.prices[0]);
   console.log("loader : ", data);
   const dispatch = useDispatch();
-
-  useEffect(() => { // this solve the bugs and handle the ui as expected or (want) الحمد لله (it's mean thank god)
+  const caracterSymbolStyle =
+    "m-[.25rem] p-[0.5rem] rounded-[0.5rem]  items-center cursor-pointer inline-flex text-[0.875rem] bg-[#fff] flex-col ";
+  useEffect(() => {
+    // this solve the bugs and handle the ui as expected or (want) الحمد لله (it's mean thank god)
     if (
       data.some((item) => {
         return item.id === loaderData.id;
@@ -49,8 +52,11 @@ export const Products = () => {
     }
     dispatch(modifieItemNumber({ id: loaderData.id, nbItems: counter }));
   }, [counter]);
-
-  function checkFunction() {  // a big shi*
+  useEffect(() => {
+    dispatch(changeItemPosition({ id: loaderData.id, item: sCaracter }));
+  }, [sCaracter]);
+  function checkFunction() {
+    // a big shi*
     let flag = false;
     const index = data.findIndex((item) => item.id === loaderData.id);
     if (activeLinkCart == true && counter > 0 && index == -1 && flag == false) {
@@ -196,7 +202,7 @@ export const Products = () => {
               </div>
             </div>
             <p className="text-[1.75rem] text-[#2e2f32] leading-6 font-bold mb-[1rem]">
-              {"$" + loaderData.prices[0].price}
+              {"$" + sCaracter.price}
             </p>
             {!activeLinkCart ? (
               <button
@@ -245,8 +251,41 @@ export const Products = () => {
                 </div>
               </div>
             )}
-            
+
             <hr />
+            <div className="pt-[1rem] ">
+              <span className="font-bold text-[#46474a] text-[0.875rem] ">
+                Size:{sCaracter.size + '"'}
+              </span>
+              <div className="flex w-full">
+                {loaderData.prices.map((item, index) => {
+                  console.log("item size :", item.size);
+                  return (
+                    <div
+                      className="flex flex-grow-0 flex-shrink-0 flex-col mb-0"
+                      style={{ flexBasis: "33.33%" }}
+                      key={index}
+                    >
+                      <button
+                        className={
+                          sCaracter.size != item.size
+                            ? caracterSymbolStyle +
+                              "border-[#babbbe] border-2 text-[#babbbe] "
+                            : caracterSymbolStyle +
+                              "text-[#000] border-4 border-[#000]"
+                        }
+                        onClick={() => {
+                          setScaracter(item);
+                        }}
+                      >
+                        <p>{item.size + '"'}</p>
+                        <p>{item.price}</p>
+                      </button>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
           </div>
         </div>
       </div>
