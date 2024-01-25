@@ -1,8 +1,4 @@
-import {
-  faMinus,
-  faObjectGroup,
-  faPlus,
-} from "@fortawesome/free-solid-svg-icons";
+import { faMinus, faPlus } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -20,12 +16,28 @@ export const Products = () => {
   const data = useSelector((state) => state.productsData.data);
   const [activeLinkCart, setActiveLinkCart] = useState(false);
   const [content, setContent] = useState("Add to cart");
-  const [counter, setCounter] = useState(1);
+  let flag = false;
+  let val = 1;
+  if (
+    data.some((item) => {
+      return item.id === loaderData.id;
+    }) &&
+    flag == false
+  ) {
+    const index = data.findIndex((item) => item.id === loaderData.id);
+    flag = true;
+    if (data[index].nbItems > 1) {
+      val = data[index].nbItems;
+    }
+  }
+
+  const [counter, setCounter] = useState(val);
   const [sCaracter, setScaracter] = useState(loaderData.prices[0]);
   console.log("loader : ", data);
   const dispatch = useDispatch();
   const caracterSymbolStyle =
     "m-[.25rem] p-[0.5rem] rounded-[0.5rem]  items-center cursor-pointer inline-flex text-[0.875rem] bg-[#fff] flex-col ";
+
   useEffect(() => {
     // this solve the bugs and handle the ui as expected or (want) الحمد لله (it's mean thank god)
     if (
@@ -42,6 +54,7 @@ export const Products = () => {
       setCounter(0);
     }
   }, [data]);
+  // for counter value
 
   useEffect(() => {
     if (counter == 0) {
@@ -213,7 +226,11 @@ export const Products = () => {
                   setTimeout(() => {
                     setActiveLinkCart(true);
                     dispatch(
-                      getProductData({ ...loaderData, nbItems: counter })
+                      getProductData({
+                        ...loaderData,
+                        nbItems: counter,
+                        initialS: sCaracter,
+                      })
                     );
                   }, 2000);
                 }}

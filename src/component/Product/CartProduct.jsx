@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { Link, NavLink } from "react-router-dom";
-import { getProductData, modifieItemNumber } from "../../store/createSlice";
+import { getProductData } from "../../store/createSlice";
 import { useSelector } from "react-redux";
 export const CartProduct = (props) => {
   const dispatsh = useDispatch();
@@ -81,7 +81,13 @@ export const CartProduct = (props) => {
                   </NavLink>
                 );
                 if (classLinkBtn == "link-btn") {
-                  dispatsh(getProductData({ ...props.props, nbItems: 1 }));
+                  dispatsh(
+                    getProductData({
+                      ...props.props,
+                      nbItems: 1,
+                      initialS: price[0],
+                    })
+                  );
                 }
 
                 setClassLinkBtn("link-btn-active");

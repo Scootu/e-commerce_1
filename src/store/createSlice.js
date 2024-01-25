@@ -10,7 +10,7 @@ export const dataSlice = createSlice({
     getProductData: (state, action) => {
       let productData = action.payload;
       const getElem = productData.prices.findIndex((elem) => {
-        return elem.size === productData.initialSize;
+        return elem.size === productData.initialS.size;
       });
       console.log(productData.prices, "index", getElem);
       if (getElem != -1 && getElem != 0) {
