@@ -31,12 +31,14 @@ export const CartShopping = () => {
       }}
       className="relative"
     >
-      <div className="relative cursor-pointer ">
-        <div className="absolute top-[-10px] right-[-12px] px-[2px] bg-[#f8d7a4] rounded-md">
-          {data.length}
+      <Link to={"/cart"}>
+        <div className="relative cursor-pointer ">
+          <div className="absolute top-[-10px] right-[-12px] px-[2px] bg-[#f8d7a4] rounded-md">
+            {data.length}
+          </div>
+          <FontAwesomeIcon icon={faCartShopping} />
         </div>
-        <FontAwesomeIcon icon={faCartShopping} />
-      </div>
+      </Link>
       <div className={showPanier ? styleb : styleb + " opacity-0"}></div>
       {showPanier && (
         <>
@@ -101,7 +103,7 @@ export const CartShopping = () => {
                 </div>
                 <div className="py-0">
                   <button className="block p-2 bg-slate-800 w-full text-white mb-2">
-                    See Cart
+                    <Link to={"/cart"}>See Cart</Link>
                   </button>
                   <button className="block p-2 bg-red-700 w-full text-white">
                     Order now!

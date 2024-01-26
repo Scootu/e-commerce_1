@@ -10,6 +10,7 @@ import store from "./store/store.js";
 import { Provider } from "react-redux";
 import { Cart } from "./Pages/Cart.jsx";
 import { Products } from "./Pages/Product.jsx";
+import { Checkout } from "./Pages/Checkout.jsx"; 
 // register Swiper custom elements
 register();
 const router = createBrowserRouter([
@@ -41,6 +42,7 @@ const router = createBrowserRouter([
         path: "/cart",
         element: <Cart />,
       },
+      { path: "/checkout", element: <Checkout /> },
       {
         path: "/products",
         children: [
