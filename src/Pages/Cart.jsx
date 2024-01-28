@@ -29,8 +29,8 @@ export const Cart = () => {
           ) : (
             <>
               <div
-                className="pt-0 px-[30px] pb-[30px] mb-0 max-w-[70%]"
-                style={{ flexBasis: "70%" }}
+                className="pt-0 px-[30px] pb-[30px] mb-0 max-w-[63%]"
+                style={{ flexBasis: "63%" }}
               >
                 {/* <Table data={productsData} /> */}
                 <div className="font-bold pb-[1rem]">
@@ -46,30 +46,71 @@ export const Cart = () => {
                 </ul>
               </div>
               <div
-                className="border-l border-l-[#ececec] pt-0 px-[30px] pb-[30px] mb-0 max-w-[30%] "
-                style={{ flexBasis: "30%" }}
+                className="h-full border rounded shadow border-[#ececec] pt-[15px] px-[15px] pb-[15px] mb-0 max-w-[37%] "
+                style={{ flexBasis: "37%" }}
               >
                 <table className="w-full mb-[1rem] border-[#ececec] ">
-                  <thead>
-                    <tr className="uppercase leading-[1.05rem] tracking-wider text-[1rem] text-[#777] font-bold  border-b-[3px] p-[0.5rem] ">
+                  <thead className="border-b-[3px]">
+                    <tr className=" table-cell w-full  uppercase leading-[1.05rem] tracking-wider text-[1rem] text-[#777] font-bold   p-[0.25rem] ">
                       Total Cart
                     </tr>
                   </thead>
                   <tbody>
-                    <tr className="p-[20px]">
-                      <th className="text-left ">Sous-total</th>
-                      <td>0000</td>
+                    <tr className="border-b-[1px] ">
+                      <th className="text-left p-[0.25rem] table-cell text-[1.1rem] font-normal text-[#777] ">
+                        sub-total
+                      </th>
+                      <td className="p-[0.25rem] table-cell font-bold">
+                        $
+                        {productsData
+                          .reduce((previous, current) => {
+                            return (
+                              previous +
+                              current.prices[0].price * current.nbItems
+                            );
+                          }, 0)
+                          .toFixed(2)}
+                      </td>
                     </tr>
-                    <tr>
-                      <th>Expédition</th>
-                      <td>livrison a alger</td>
+                    <tr className="border-b-[1px]">
+                      <th className="text-left p-[0.25rem] table-cell text-[1.1rem] font-normal text-[#777] ">
+                        shipping
+                      </th>
+                      <td className="table-cell p-[0.25rem]">
+                        <div className="text-[#777] w-max ">Free delivery</div>
+                        <div className="text-[#777] w-max">
+                          Delivery to{" "}
+                          <span className="font-bold">Algiers.</span>
+                        </div>
+                        <div className="text-[#334862]  text-[.9rem] hover:text-[#000] cursor-pointer">
+                          Change the address
+                        </div>
+                      </td>
                     </tr>
-                    <tr>
-                      <th>Total</th>
-                      <td>0000</td>
+                    <tr className="border-b-[3px]">
+                      <th className="text-left p-[0.25rem] table-cell text-[1.1rem] font-normal text-[#777] ">
+                        Total
+                      </th>
+                      <td className="p-[0.25rem] font-bold">
+                        $
+                        {productsData
+                          .reduce((previous, current) => {
+                            return (
+                              previous +
+                              current.prices[0].price * current.nbItems
+                            );
+                          }, 0)
+                          .toFixed(2)}
+                      </td>
                     </tr>
                   </tbody>
                 </table>
+                <Link
+                  to={"/checkout"}
+                  className="py-0 px-[1.5rem] mb-[1rem] text-[1rem] h-[2.5rem] flex w-full bg-[#0071dc] text-[#fff] font-bold items-center appearance-none border-0 rounded-[62.5rem] cursor-pointer justify-center whitespace-nowrap"
+                >
+                  Validated the order
+                </Link>
               </div>
             </>
           )}
