@@ -2,13 +2,15 @@ import React, { useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCartShopping, faXmark } from "@fortawesome/free-solid-svg-icons";
 import { useDispatch, useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { removeProduct } from "../../store/createSlice";
 
 export const CartShopping = () => {
   const data = useSelector((state) => state.productsData.data);
   const [showPanier, setShowPanier] = useState(false);
   const dispatch = useDispatch();
+  const location = useLocation().pathname.split("/").join("");
+  console.log(location, "location :");
   let styleb =
     "w-0 h-0 border-b-[11px] border-b-[#ddd] border-l-[10px] border-r-[10px] border-transparent ";
   function checkCondition() {
@@ -18,13 +20,15 @@ export const CartShopping = () => {
       setShowPanier(false);
     }
   }
-  useEffect(() => {
-    checkCondition();
-  }, [data]);
+  // useEffect(() => {
+  //   checkCondition();
+  // }, [data]);
   return (
     <li
       onMouseOver={() => {
-        setShowPanier(true);
+        if (location !== "cart" && location !== "checkout") {
+          setShowPanier(true);
+        }
       }}
       onMouseLeave={() => {
         setShowPanier(false);

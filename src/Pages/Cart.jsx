@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useSelector } from "react-redux";
 import { Segments } from "../component/segments/Segments";
 import { CartProductLIst } from "../component/CartProductLIst";
@@ -39,7 +39,7 @@ export const Cart = () => {
                   }, 0)}{" "}
                   items
                 </div>
-                <ul className="max-h-[500px] overflow-y-scroll">
+                <ul className="max-h-[430px] h-full overflow-y-auto">
                   {productsData.map((item, index) => {
                     return <CartProductLIst key={index} {...item} />;
                   })}
@@ -111,6 +111,24 @@ export const Cart = () => {
                 >
                   Validated the order
                 </Link>
+                <div>
+                  <p className="font-bold text-[#555555] text-[.95rem] mb-[15px] pb-[10px] border-b-[3px] border-[#ececec] ">
+                    Code promo
+                  </p>
+                  <input
+                    name="userCodePromo"
+                    type="text"
+                    placeholder="Code promo"
+                    className="w-full shadow border text-[.95rem] px-4 py-2 outline-none mb-[1rem] "
+                  />
+                  <button
+                    type="submit"
+                    name="apply_code_promo"
+                    className="w-full bg-[#f9f9f9] border border-[#ddd] text-[#666]  cursor-pointer text-[0.97em] leading-[2.4em] tracking-[.03em] mr-[1em] px-[1.2em] min-h-[2.5em] hover:tran_btn"
+                  >
+                    Apply the code promo
+                  </button>
+                </div>
               </div>
             </>
           )}
