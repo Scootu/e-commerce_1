@@ -12,8 +12,13 @@ export default {
         oWiggle: "oWiggle 2s ease-in-out forwards",
         smouth_down: "smouth_down 0.4s ease-in-out forwards",
         scroll_Up: "scroll_Up 0.6s ease-in-out forwards",
+        smouth: "smouth 0.5s ease forwards",
       },
       keyframes: {
+        smouth: {
+          "0%": { transformOrigin: "top", transform: "scaleY(0)" },
+          "100%": { transform: "scaleY(1)" },
+        },
         scroll_Up: {
           from: {
             opacity: "0.5",

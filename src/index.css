@@ -48,4 +48,7 @@ html {
   .scrollbar-gutter {
     scrollbar-gutter: stable;
   }
+  .tran_click {
+    transition: transform 500ms ease;
+  }
 }
