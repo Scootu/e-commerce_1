@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import { useSelector } from "react-redux";
 import { Segments } from "../component/segments/Segments";
 import { CartProductLIst } from "../component/CartProductLIst";
@@ -6,9 +6,39 @@ import { Link } from "react-router-dom";
 
 export const Cart = () => {
   const productsData = useSelector((state) => state.productsData.data);
-  const [address, setAddress] = useState("Algiers");
+  const [address, setAddress] = useState(["Algiers"]);
   const [clickModifyAddress, setClickModifyAddress] = useState(false);
-  const [height, setHeight] = useState(0);
+  const [clickUpdate, setCLickUpdate] = useState(false);
+  const inputElement = useRef();
+  const villeInput = useRef();
+  const codePostalInput = useRef();
+  const codePromoInput = useRef();
+  const [checkError, setCheckError] = useState(false);
+  const [checkInputNumber, setCheckInputNumber] = useState(false);
+  const [codePromoNumberError, setCodePromoNumberError] = useState(false);
+  function checkFormInput() {
+    if (
+      villeInput.current.value === "" ||
+      codePostalInput.current.value === ""
+    ) {
+      setCheckError(true);
+    } else {
+      setCLickUpdate(true);
+
+      setTimeout(() => {
+        setClickModifyAddress(false);
+
+        setAddress([
+          villeInput.current.value,
+          inputElement.current.options[inputElement.current.selectedIndex]
+            .textContent,
+          codePostalInput.current.value,
+        ]);
+        setCLickUpdate(false);
+      }, 2000);
+    }
+  }
+  // const [height, setHeight] = useState(0);
   // function animateElement() {
   //   for (let index = 0; height < 270; index++) {
   //     setHeight((prev) => prev + 10);
@@ -61,14 +91,14 @@ export const Cart = () => {
               >
                 <table className="w-full mb-[1rem] border-[#ececec] ">
                   <thead className="border-b-[3px]">
-                    <tr className=" table-cell w-full  uppercase leading-[1.05rem] tracking-wider text-[1rem] text-[#777] font-bold   p-[0.25rem] ">
+                    <p className=" table-cell w-full  uppercase leading-[1.05rem] tracking-wider text-[1rem] text-[#777] font-bold   p-[0.25rem] ">
                       Total Cart
-                    </tr>
+                    </p>
                   </thead>
                   <tbody>
                     <tr className="border-b-[1px] ">
                       <th className="text-left p-[0.25rem] table-cell text-[1.1rem] font-normal text-[#777] ">
-                        sub-total
+                        subTotal
                       </th>
                       <td className="p-[0.25rem] table-cell font-bold text-right">
                         $
@@ -87,33 +117,36 @@ export const Cart = () => {
                         shipping
                       </th>
                       <td className="table-cell p-[0.25rem] text-right">
-                        <div className="text-[#777]  w-full  whitespace-nowrap">
+                        <div className="text-[#777]  w-[300px]  whitespace-nowrap">
                           Free delivery
                         </div>
-                        <div className="text-[#777]  w-full whitespace-nowrap">
+                        <div className="text-[#777] ">
                           Delivery to{" "}
-                          <span className="font-bold">{address}.</span>
+                          <span className="font-bold">{address.join()}.</span>
                         </div>
                         <div
-                          className="text-[#334862] select-none  text-[.9rem] hover:text-[#000] cursor-pointer"
+                          className="text-[#334862] select-none whitespace-nowrap text-right w-full  text-[.9rem] hover:text-[#000] cursor-pointer"
                           onClick={() => {
                             setClickModifyAddress(!clickModifyAddress);
-                            animateElement();
                           }}
                         >
                           Change the address
                         </div>
                         {
                           <section
-                            style={{ height: height.toString() + "px" }}
                             className={
                               clickModifyAddress
-                                ? "bg-[rgba(0,0,0,.03)] relative h-[267.65px]  rounded-[5px] mt-[5px] pt-[15px] px-[15px] pb-[10px] text-[#666] text-[.9em] leading-[1.3em] text-left   overflow-hidden"
+                                ? "bg-[rgba(0,0,0,.03)] relative  rounded-[5px] mt-[5px] pt-[15px] px-[15px] pb-[10px] text-[#666] text-[.9em] leading-[1.3em] text-left   overflow-hidden"
                                 : "hidden"
                             }
                           >
-                            <div className="absolute">
-                              <select className="px-[0.75em] align-middle outline-none cursor-pointer  mb-[1rem] text-[#444] whitespace-nowrap bg-white border border-[#ddd] text-[.97em] h-[2.507em]">
+                            {clickUpdate && (
+                              <div className="absolute w-[100%] h-[100%]  opacity-70  bg-white top-0 left-0 grid justify-center items-center">
+                                <div className="loader"></div>
+                              </div>
+                            )}
+                            <div className="">
+                              <select className="px-[0.75em] w-full align-middle outline-none cursor-pointer  mb-[1rem] text-[#444] whitespace-nowrap bg-white border border-[#ddd] text-[.97em] h-[2.507em]">
                                 <option value="default">
                                   Select a country/region…
                                 </option>
@@ -130,6 +163,7 @@ export const Cart = () => {
                               <select
                                 className="px-[0.75em] w-full outline-none align-middle cursor-pointer  mb-[1rem] text-[#444] whitespace-nowrap bg-white border border-[#ddd] text-[.97em] h-[2.507em]"
                                 placeholder="Région / Département"
+                                ref={inputElement}
                               >
                                 <option value="DZ-01">Adrar</option>
                                 <option value="DZ-02">Chlef</option>
@@ -182,6 +216,54 @@ export const Cart = () => {
                                 <option value="DZ-47">Ghardaïa</option>
                                 <option value="DZ-48">Relizane</option>
                               </select>
+                              <input
+                                name="ville"
+                                className="w-full px-[0.75em] align-middle outline-none  mb-[1rem] text-[#444] whitespace-nowrap bg-white border border-[#ddd] text-[.97em] h-[2.507em] focus:shadow"
+                                placeholder="Ville"
+                                ref={villeInput}
+                                onChange={() => {
+                                  if (checkError) {
+                                    setCheckError(false);
+                                  }
+                                }}
+                              />
+                              {checkError && (
+                                <p className="text-red-600 relative -top-[15px]">
+                                  Need to fill this
+                                </p>
+                              )}
+                              <input
+                                name="codePostal"
+                                className="w-full px-[0.75em] align-middle outline-none  mb-[1rem] text-[#444] whitespace-nowrap bg-white border border-[#ddd] text-[.97em] h-[2.507em] focus:shadow"
+                                placeholder="Code postal"
+                                ref={codePostalInput}
+                                onChange={() => {
+                                  if (checkError) {
+                                    setCheckError(false);
+                                  }
+                                  if (isNaN(codePostalInput.current.value)) {
+                                    setCheckInputNumber(true);
+                                  } else {
+                                    setCheckInputNumber(false);
+                                  }
+                                }}
+                              />
+                              {checkError && (
+                                <p className="text-red-600 relative -top-[15px]">
+                                  Need to fill this
+                                </p>
+                              )}
+                              {checkInputNumber && (
+                                <p className="text-red-600 relative -top-[8px]">
+                                  Need to be a number
+                                </p>
+                              )}
+                              <button
+                                className="py-0 px-[1.5rem] mb-[1rem] text-[1rem] h-[2.5rem] flex w-full bg-[#0071dc] text-[#fff] font-bold items-center appearance-none border-0 rounded-[62.5rem] cursor-pointer justify-center whitespace-nowrap"
+                                onClick={checkFormInput}
+                              >
+                                update
+                              </button>
                             </div>
                           </section>
                         }
@@ -220,11 +302,27 @@ export const Cart = () => {
                     type="text"
                     placeholder="Code promo"
                     className="w-full shadow border text-[.95rem] px-4 py-2 outline-none mb-[1rem] "
+                    ref={codePromoInput}
+                    onChange={() => {
+                      if (codePromoNumberError) {
+                        setCodePromoNumberError(false);
+                      }
+                    }}
                   />
+                  {codePromoNumberError && (
+                    <p className="text-red-600 relative -top-[15px]">
+                      Need to fill this
+                    </p>
+                  )}
                   <button
                     type="submit"
                     name="apply_code_promo"
                     className="w-full bg-[#f9f9f9] border border-[#ddd] text-[#666]  cursor-pointer text-[0.97em] leading-[2.4em] tracking-[.03em] mr-[1em] px-[1.2em] min-h-[2.5em] hover:tran_btn"
+                    onClick={() => {
+                      if (codePromoInput.current.value === "") {
+                        setCodePromoNumberError(true);
+                      }
+                    }}
                   >
                     Apply the code promo
                   </button>
