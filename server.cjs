@@ -13,7 +13,7 @@ app.post("/api/validate-code", async (req, res) => {
   try {
     const userCodePromo = req.body.userCodePromo;
 
-    // Add your validation logic here
+    // Add your validation login here
     const isValidCode = validatePromoCode(userCodePromo);
 
     if (isValidCode) {

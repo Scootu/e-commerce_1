@@ -318,9 +318,9 @@ export const Cart = () => {
                   className="py-0 px-[1.5rem] mb-[1rem] text-[1rem] h-[2.5rem] flex w-full bg-[#0071dc] text-[#fff] font-bold items-center appearance-none border-0 rounded-[62.5rem] cursor-pointer justify-center whitespace-nowrap"
                   onClick={() => {
                     setClickValidteOrder(true);
-                    setTimeout(() => {
-                      navigate("/checkout");
-                    }, 2000);
+                    setTimeout(()=>{
+                      navigate('/checkout');
+                    },2000);
                   }}
                 >
                   Validated the order
