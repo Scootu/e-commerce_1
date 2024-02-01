@@ -10,7 +10,7 @@ export const CartShopping = () => {
   const [showPanier, setShowPanier] = useState(false);
   const dispatch = useDispatch();
   const location = useLocation().pathname.split("/").join("");
-  console.log(location, "location :");
+
   let styleb =
     "w-0 h-0 border-b-[11px] border-b-[#ddd] border-l-[10px] border-r-[10px] border-transparent ";
   function checkCondition() {

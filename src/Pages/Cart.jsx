@@ -1,8 +1,8 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
 import { Segments } from "../component/segments/Segments";
 import { CartProductLIst } from "../component/CartProductLIst";
-import { Link } from "react-router-dom";
+import { Form, Link, useActionData, useNavigate } from "react-router-dom";
 
 export const Cart = () => {
   const productsData = useSelector((state) => state.productsData.data);
@@ -16,7 +16,27 @@ export const Cart = () => {
   const [checkError, setCheckError] = useState(false);
   const [checkInputNumber, setCheckInputNumber] = useState(false);
   const [codePromoNumberError, setCodePromoNumberError] = useState(false);
+  const [codePromotionAction, setCodePromotionAction] = useState(<p></p>);
+  const [clickValidateOrder, setClickValidteOrder] = useState(false);
+  const actionError = useActionData();
+  const navigate = useNavigate();
+  useEffect(() => {
+    if (actionError) {
+      setCodePromotionAction(() =>
+        actionError.ok ? (
+          <div className="text-green-600">
+            the promo code {actionError.code} applied
+          </div>
+        ) : (
+          <div className="text-red-600">
+            The promo code «{actionError.code}» does not exist!
+          </div>
+        )
+      );
+    }
+  }, [actionError]);
   function checkFormInput() {
+    // we can build a form validation with action and useActionData
     if (
       villeInput.current.value === "" ||
       codePostalInput.current.value === ""
@@ -73,6 +93,8 @@ export const Cart = () => {
                 style={{ flexBasis: "63%" }}
               >
                 {/* <Table data={productsData} /> */}
+
+                {codePromotionAction}
                 <div className="font-bold pb-[1rem]">
                   {productsData.reduce((previous, current) => {
                     return previous + current.nbItems;
@@ -86,7 +108,7 @@ export const Cart = () => {
                 </ul>
               </div>
               <div
-                className="h-full border rounded shadow border-[#ececec] pt-[15px] px-[15px] pb-[15px] mb-0 max-w-[37%] "
+                className="h-full border rounded shadow border-[#ececec] pt-[15px] px-[15px] pb-[15px] mb-0 max-w-[37%] relative "
                 style={{ flexBasis: "37%" }}
               >
                 <table className="w-full mb-[1rem] border-[#ececec] ">
@@ -151,7 +173,7 @@ export const Cart = () => {
                                   Select a country/region…
                                 </option>
                                 <option value={"FR"}>France</option>
-                                <option value={"DZ"} selected="selected">
+                                <option value={"DZ"} selected>
                                   Algeria
                                 </option>
                                 <option value={"LY"}>Libya</option>
@@ -287,46 +309,58 @@ export const Cart = () => {
                     </tr>
                   </tbody>
                 </table>
-                <Link
-                  to={"/checkout"}
+                {clickValidateOrder && (
+                  <div className="absolute w-[100%] h-[100%]  opacity-70  bg-white top-0 left-0 grid justify-center items-center">
+                    <div className="loader"></div>
+                  </div>
+                )}
+                <button
                   className="py-0 px-[1.5rem] mb-[1rem] text-[1rem] h-[2.5rem] flex w-full bg-[#0071dc] text-[#fff] font-bold items-center appearance-none border-0 rounded-[62.5rem] cursor-pointer justify-center whitespace-nowrap"
+                  onClick={() => {
+                    setClickValidteOrder(true);
+                    setTimeout(() => {
+                      navigate("/checkout");
+                    }, 2000);
+                  }}
                 >
                   Validated the order
-                </Link>
-                <div>
-                  <p className="font-bold text-[#555555] text-[.95rem] mb-[15px] pb-[10px] border-b-[3px] border-[#ececec] ">
-                    Code promo
-                  </p>
-                  <input
-                    name="userCodePromo"
-                    type="text"
-                    placeholder="Code promo"
-                    className="w-full shadow border text-[.95rem] px-4 py-2 outline-none mb-[1rem] "
-                    ref={codePromoInput}
-                    onChange={() => {
-                      if (codePromoNumberError) {
-                        setCodePromoNumberError(false);
-                      }
-                    }}
-                  />
-                  {codePromoNumberError && (
-                    <p className="text-red-600 relative -top-[15px]">
-                      Need to fill this
+                </button>
+                <Form method="POST">
+                  <div>
+                    <p className="font-bold text-[#555555] text-[.95rem] mb-[15px] pb-[10px] border-b-[3px] border-[#ececec] ">
+                      Code promo
                     </p>
-                  )}
-                  <button
-                    type="submit"
-                    name="apply_code_promo"
-                    className="w-full bg-[#f9f9f9] border border-[#ddd] text-[#666]  cursor-pointer text-[0.97em] leading-[2.4em] tracking-[.03em] mr-[1em] px-[1.2em] min-h-[2.5em] hover:tran_btn"
-                    onClick={() => {
-                      if (codePromoInput.current.value === "") {
-                        setCodePromoNumberError(true);
-                      }
-                    }}
-                  >
-                    Apply the code promo
-                  </button>
-                </div>
+                    <input
+                      name="userCodePromo"
+                      type="text"
+                      placeholder="Code promo"
+                      className="w-full shadow border text-[.95rem] px-4 py-2 outline-none mb-[1rem] "
+                      ref={codePromoInput}
+                      onChange={() => {
+                        if (codePromoNumberError) {
+                          setCodePromoNumberError(false);
+                        }
+                      }}
+                    />
+                    {codePromoNumberError && (
+                      <p className="text-red-600 relative -top-[15px]">
+                        Need to fill this
+                      </p>
+                    )}
+                    <button
+                      type="submit"
+                      name="apply_code_promo"
+                      className="w-full bg-[#f9f9f9] border border-[#ddd] text-[#666]  cursor-pointer text-[0.97em] leading-[2.4em] tracking-[.03em] mr-[1em] px-[1.2em] min-h-[2.5em] hover:tran_btn"
+                      onClick={() => {
+                        if (codePromoInput.current.value === "") {
+                          setCodePromoNumberError(true);
+                        }
+                      }}
+                    >
+                      Apply the code promo
+                    </button>
+                  </div>
+                </Form>
               </div>
             </>
           )}

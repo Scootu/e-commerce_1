@@ -10,7 +10,7 @@ import store from "./store/store.js";
 import { Provider } from "react-redux";
 import { Cart } from "./Pages/Cart.jsx";
 import { Products } from "./Pages/Product.jsx";
-import { Checkout } from "./Pages/Checkout.jsx"; 
+import { Checkout } from "./Pages/Checkout.jsx";
 // register Swiper custom elements
 register();
 const router = createBrowserRouter([
@@ -41,6 +41,32 @@ const router = createBrowserRouter([
       {
         path: "/cart",
         element: <Cart />,
+        action: async ({ request }) => {
+          try {
+            let formData = await request.formData();
+            const userCodePromo = formData.get("userCodePromo"); // Get the user-entered code
+
+            const res = await fetch("http://localhost:5000/api/validate-code", {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/x-www-form-urlencoded",
+              },
+              body: `userCodePromo=${userCodePromo}`,
+            });
+
+            if (!res.ok) {
+              throw res;
+            }
+
+            const data = await res.json();
+          
+            return data;
+          } catch (error) {
+            console.error(error);
+            // Handle error
+            return null;
+          }
+        },
       },
       { path: "/checkout", element: <Checkout /> },
       {
