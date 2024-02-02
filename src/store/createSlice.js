@@ -12,7 +12,7 @@ export const dataSlice = createSlice({
       const getElem = productData.prices.findIndex((elem) => {
         return elem.size === productData.initialS.size;
       });
-      
+
       if (getElem != -1 && getElem != 0) {
         const initialElem = productData.prices[0];
         productData.prices[0] = productData.prices[getElem];

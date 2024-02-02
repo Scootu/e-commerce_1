@@ -51,4 +51,17 @@ html {
   .tran_click {
     transition: transform 500ms ease;
   }
+  .inputShadow {
+    box-shadow: 0 0 5px #ccc;
+  }
+  .transition_I {
+    transition: all 0.1s cubic-bezier(0.77, 0, 0.175, 1);
+  }
+  .billingFixed {
+    position: fixed;
+    top: 20px;
+    width: 400px;
+    z-index: 999;
+    background-color: white;
+  }
 }

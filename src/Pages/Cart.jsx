@@ -1,8 +1,9 @@
 import React, { useEffect, useRef, useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Segments } from "../component/segments/Segments";
 import { CartProductLIst } from "../component/CartProductLIst";
 import { Form, Link, useActionData, useNavigate } from "react-router-dom";
+import { getNewAddress } from "../store/newOrderSlice";
 
 export const Cart = () => {
   const productsData = useSelector((state) => state.productsData.data);
@@ -18,8 +19,11 @@ export const Cart = () => {
   const [codePromoNumberError, setCodePromoNumberError] = useState(false);
   const [codePromotionAction, setCodePromotionAction] = useState(<p></p>);
   const [clickValidateOrder, setClickValidteOrder] = useState(false);
+  const [checkInputWord, setCheckInputWord] = useState(false);
   const actionError = useActionData();
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  
   useEffect(() => {
     if (actionError) {
       setCodePromotionAction(() =>
@@ -35,6 +39,7 @@ export const Cart = () => {
       );
     }
   }, [actionError]);
+
   function checkFormInput() {
     // we can build a form validation with action and useActionData
     if (
@@ -54,6 +59,16 @@ export const Cart = () => {
             .textContent,
           codePostalInput.current.value,
         ]);
+        console.log("dispatch");
+        dispatch(
+          getNewAddress({
+            city: villeInput.current.value,
+            wilaya:
+              inputElement.current.options[inputElement.current.selectedIndex]
+                .textContent,
+            codePostal: codePostalInput.current.value,
+          })
+        );
         setCLickUpdate(false);
       }, 2000);
     }
@@ -113,9 +128,9 @@ export const Cart = () => {
               >
                 <table className="w-full mb-[1rem] border-[#ececec] ">
                   <thead className="border-b-[3px]">
-                    <p className=" table-cell w-full  uppercase leading-[1.05rem] tracking-wider text-[1rem] text-[#777] font-bold   p-[0.25rem] ">
+                    <tr className="w-full  uppercase leading-[1.05rem] tracking-wider text-[1rem] text-[#777] font-bold   p-[0.25rem] ">
                       Total Cart
-                    </p>
+                    </tr>
                   </thead>
                   <tbody>
                     <tr className="border-b-[1px] ">
@@ -168,14 +183,15 @@ export const Cart = () => {
                               </div>
                             )}
                             <div className="">
-                              <select className="px-[0.75em] w-full align-middle outline-none cursor-pointer  mb-[1rem] text-[#444] whitespace-nowrap bg-white border border-[#ddd] text-[.97em] h-[2.507em]">
-                                <option value="default">
+                              <select
+                                className="px-[0.75em] w-full align-middle outline-none cursor-pointer  mb-[1rem] text-[#444] whitespace-nowrap bg-white border border-[#ddd] text-[.97em] h-[2.507em]"
+                                defaultValue={"Algeria"}
+                              >
+                                <option value="">
                                   Select a country/region…
                                 </option>
                                 <option value={"FR"}>France</option>
-                                <option value={"DZ"} selected>
-                                  Algeria
-                                </option>
+                                <option value={"DZ"}>Algeria</option>
                                 <option value={"LY"}>Libya</option>
                                 <option value={"MA"}>Morocco</option>
                                 <option value={"TN"}>Tunisia</option>
@@ -247,11 +263,24 @@ export const Cart = () => {
                                   if (checkError) {
                                     setCheckError(false);
                                   }
+                                  if (
+                                    !isNaN(villeInput.current.value) &&
+                                    villeInput.current.value != ""
+                                  ) {
+                                    setCheckInputWord(true);
+                                  } else {
+                                    setCheckInputWord(false);
+                                  }
                                 }}
                               />
                               {checkError && (
                                 <p className="text-red-600 relative -top-[15px]">
                                   Need to fill this
+                                </p>
+                              )}
+                              {checkInputWord && (
+                                <p className="text-red-600 relative -top-[8px]">
+                                  Need to be a word
                                 </p>
                               )}
                               <input
@@ -318,9 +347,9 @@ export const Cart = () => {
                   className="py-0 px-[1.5rem] mb-[1rem] text-[1rem] h-[2.5rem] flex w-full bg-[#0071dc] text-[#fff] font-bold items-center appearance-none border-0 rounded-[62.5rem] cursor-pointer justify-center whitespace-nowrap"
                   onClick={() => {
                     setClickValidteOrder(true);
-                    setTimeout(()=>{
-                      navigate('/checkout');
-                    },2000);
+                    setTimeout(() => {
+                      navigate("/checkout");
+                    }, 2000);
                   }}
                 >
                   Validated the order
