@@ -125,10 +125,43 @@ const router = createBrowserRouter([
               return arrayError;
             }
             if (intent === "checkout") {
+              let OrderInformation = [];
+              let arrayOfErrors = {};
               for (const [name, value] of formData.entries()) {
-                console.log(`${name}: ${value}`);
+                OrderInformation.push({ [name]: value });
+                if (
+                  value == "" &&
+                  name !== "billing_address_1" &&
+                  name != "billing_address_2" &&
+                  name != "billing_email" &&
+                  name != "order_comments" &&
+                  name != "billing_Company_name"
+                ) {
+                  arrayOfErrors[name] = {
+                    message: `${name
+                      .split("_")
+                      .slice(1)
+                      .join(" ")} is required`,
+                  };
+                }
               }
-              return true;
+              console.log(arrayOfErrors);
+              // const res = await fetch(
+              //   "http://localhost:5000/api/validate-checkout",
+              //   {
+              //     method: "POST",
+              //     headers: {
+              //       "Content-Type": "application/json",
+              //     },
+              //     body: JSON.stringify(OrderInformation),
+              //   }
+              // );
+
+              // if (!res.ok) {
+              //   throw new Error("Server error");
+              // }
+              // const data = await res.json();
+              return arrayOfErrors;
             }
           } catch (error) {
             console.error(error);

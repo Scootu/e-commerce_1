@@ -1,10 +1,26 @@
-import React, { Fragment, useEffect, useRef, useState } from "react";
+import React, {
+  Fragment,
+  useEffect,
+  useReducer,
+  useRef,
+  useState,
+} from "react";
 import { Segments } from "../component/segments/Segments";
 import { useDispatch, useSelector } from "react-redux";
 import { Form, Link, useActionData } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleInfo } from "@fortawesome/free-solid-svg-icons";
 import { getNewAddress } from "../store/newOrderSlice";
+// function reducerFirstName({ state, action }) {
+//   switch ("check_word") {
+//     case "check_word":
+//       return {
+//         check_word: !isNaN(action.payload),
+//       };
+//     default:
+//       throw new Error("Unknown action: ");
+//   }
+// }
 
 export const Checkout = () => {
   const productsData = useSelector((state) => state.productsData.data);
@@ -24,7 +40,13 @@ export const Checkout = () => {
   const [taxes, setTaxes] = useState(1);
   const [isTaxesCon, setIsTaxesCon] = useState(false);
   const [selectAddress, setSelctetAddress] = useState("");
-  const dispatch = useDispatch();
+  const [validataForm, setValidateForm] = useState(false);
+  const [inputErrorForm, setInputErrorForm] = useState([]);
+  // const [inputCheckName, dispatch] = useReducer(reducerFirstName, {
+  //   check_word: false,
+  // });
+
+  console.log("check number", inputCheckName.check_word);
   useEffect(() => {
     setSubTotal(
       productsData.reduce((prev, current) => {
@@ -39,8 +61,13 @@ export const Checkout = () => {
   }, [productsData, taxes]);
   const billing = useRef();
   useEffect(() => {
-    if (actionError) {
+    if (actionError && clickLink) {
       setActionOk(actionError);
+    }
+  }, [actionError]);
+  useEffect(() => {
+    if (typeof actionError === "object" && actionError != undefined) {
+      setInputErrorForm(actionError);
     }
   }, [actionError]);
   useEffect(() => {
@@ -63,6 +90,7 @@ export const Checkout = () => {
       window.removeEventListener("scroll", handleScroll);
     };
   }, []); // The empty dependency array ensures that this effect runs once after the initial render
+
   return (
     <section className="max-w-7xl px-12 m-auto">
       <Segments />
@@ -159,6 +187,11 @@ export const Checkout = () => {
                 className="pt-0 px-[30px] pb-[30px] mb-0 max-w-[63%]"
                 style={{ flexBasis: "63%" }}
               >
+                {validataForm && (
+                  <p className="text-red-700">
+                    Please verify all fields below.
+                  </p>
+                )}
                 <div className="pt-[15px] border-t-2 border-t-[#ddd] ">
                   <h3 className="text-[1.1em] font-bold pt-[10px] uppercase text-[#555555] mb-[0.5em] mt-0">
                     billing details
@@ -173,7 +206,22 @@ export const Checkout = () => {
                     <input
                       name="billing_first_name"
                       className="bg-white inputShadow text-[#333] outline-none outline-offset-2 border border-[#ddd] text-[0.97em] h-[2.7em] max-w-full px-[0.75em] mb-[1em] touch-manipulation "
+                      // onChange={(p) => {
+                      //   dispatch({
+                      //     payload: p.target.value,
+                      //   });
+                      // }}
                     />
+                    {Object.hasOwn(inputErrorForm, "billing_first_name") && (
+                      <p className="text-[0.875rem] -top-[10px] relative text-red-500 ">
+                        {inputErrorForm.billing_first_name.message}
+                      </p>
+                    )}
+                    {/* {inputCheckName.check_word && (
+                      <span className="text-[0.875rem] block -top-[10px] relative text-red-500">
+                        Need to be a word
+                      </span>
+                    )} */}
                   </p>
                   <p className="text-[0.9em] ml-[1em]">
                     <label className="text-[#222] font-bold mb-[0.4em] block">
@@ -183,6 +231,11 @@ export const Checkout = () => {
                       name="billing_Last_name"
                       className="bg-white inputShadow text-[#333] outline-none outline-offset-2 border border-[#ddd] text-[0.97em] h-[2.7em] max-w-full px-[0.75em] mb-[1em] touch-manipulation "
                     />
+                    {Object.hasOwn(inputErrorForm, "billing_Last_name") && (
+                      <p className="text-[0.875rem] -top-[10px] relative text-red-500 ">
+                        {inputErrorForm.billing_Last_name.message}
+                      </p>
+                    )}
                   </p>
                 </div>
                 <p className="text-[0.9em]">
@@ -228,9 +281,7 @@ export const Checkout = () => {
                       setIsTaxesCon(true);
                     }}
                   >
-                    <option value={""} disabled>
-                      Région / Département
-                    </option>
+                    <option value={""}>Région / Département</option>
                     <option>Adrar</option>
                     <option>Chlef</option>
                     <option>Laghouat</option>
@@ -280,6 +331,11 @@ export const Checkout = () => {
                     <option>Ghardaïa</option>
                     <option>Relizane</option>
                   </select>
+                  {Object.hasOwn(inputErrorForm, "billing_State") && (
+                    <p className="text-[0.875rem] -top-[10px] relative text-red-500 ">
+                      {inputErrorForm.billing_State.message}
+                    </p>
+                  )}
                 </p>
                 <p className="text-[0.9em] mr-[1em] w-full">
                   <label className="text-[#222] font-bold mb-[0.4em] block">
@@ -290,6 +346,11 @@ export const Checkout = () => {
                     className="bg-white inputShadow w-full text-[#333] outline-none outline-offset-2 border border-[#ddd] text-[0.97em] h-[2.7em] max-w-full px-[0.75em] mb-[1em] touch-manipulation "
                     defaultValue={newOrder.address1.city}
                   />
+                  {Object.hasOwn(inputErrorForm, "billing_city") && (
+                    <p className="text-[0.875rem] -top-[10px] relative text-red-500 ">
+                      {inputErrorForm.billing_city.message}
+                    </p>
+                  )}
                 </p>
                 <p className="text-[0.9em] mr-[1em] w-full">
                   <label className="text-[#222] font-bold mb-[0.4em] block">
@@ -299,6 +360,11 @@ export const Checkout = () => {
                     name="billing_phone"
                     className="bg-white inputShadow w-full text-[#333] outline-none outline-offset-2 border border-[#ddd] text-[0.97em] h-[2.7em] max-w-full px-[0.75em] mb-[1em] touch-manipulation "
                   />
+                  {Object.hasOwn(inputErrorForm, "billing_phone") && (
+                    <p className="text-[0.875rem] -top-[10px] relative text-red-500 ">
+                      {inputErrorForm.billing_phone.message}
+                    </p>
+                  )}
                 </p>
                 <p className="text-[0.9em] mr-[1em] w-full">
                   <label className="text-[#222] font-bold mb-[0.4em] block">
