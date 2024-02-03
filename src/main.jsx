@@ -77,52 +77,59 @@ const router = createBrowserRouter([
             const formData = await request.formData();
             const intent = formData.get("intent");
             const codePromo = formData.get("codePromo");
-
-            if (codePromo.length > 9) {
-              arrayError.push({
-                ok: false,
-                code: codePromo,
-                message: "Invalid: should be less than 9 characters",
-              });
-            }
-            if (codePromo.length == 0) {
-              arrayError.push({
-                ok: false,
-                code: codePromo,
-                message: "Please enter a promo code.",
-              });
-            } else {
-              const res = await fetch(
-                "http://localhost:5000/api/validate-code",
-                {
-                  method: "POST",
-                  headers: {
-                    "Content-Type": "application/x-www-form-urlencoded",
-                  },
-                  body: `userCodePromo=${codePromo}`,
-                }
-              );
-
-              if (!res.ok) {
-                throw new Error("Server error");
-              }
-
-              const data = await res.json();
-              if (!data.ok) {
+            if (intent === "codePromo") {
+              if (codePromo.length > 9) {
                 arrayError.push({
-                  ok: data.ok,
-                  code: data.code,
-                  message: `The promo code «${data.code}» does not exist!`,
+                  ok: false,
+                  code: codePromo,
+                  message: "Invalid: should be less than 9 characters",
+                });
+              }
+              if (codePromo.length == 0) {
+                arrayError.push({
+                  ok: false,
+                  code: codePromo,
+                  message: "Please enter a promo code.",
                 });
               } else {
-                arrayError.push({
-                  ok: true,
-                  code: data.code,
-                  message: `The promo code «${data.code}» applied`,
-                });
+                const res = await fetch(
+                  "http://localhost:5000/api/validate-code",
+                  {
+                    method: "POST",
+                    headers: {
+                      "Content-Type": "application/x-www-form-urlencoded",
+                    },
+                    body: `userCodePromo=${codePromo}`,
+                  }
+                );
+
+                if (!res.ok) {
+                  throw new Error("Server error");
+                }
+
+                const data = await res.json();
+                if (!data.ok) {
+                  arrayError.push({
+                    ok: data.ok,
+                    code: data.code,
+                    message: `The promo code «${data.code}» does not exist!`,
+                  });
+                } else {
+                  arrayError.push({
+                    ok: true,
+                    code: data.code,
+                    message: `The promo code «${data.code}» applied`,
+                  });
+                }
               }
+              return arrayError;
             }
-            return arrayError;
+            if (intent === "checkout") {
+              for (const [name, value] of formData.entries()) {
+                console.log(`${name}: ${value}`);
+              }
+              return true;
+            }
           } catch (error) {
             console.error(error);
             // Handle error

@@ -1,9 +1,10 @@
 import React, { Fragment, useEffect, useRef, useState } from "react";
 import { Segments } from "../component/segments/Segments";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Form, Link, useActionData } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleInfo } from "@fortawesome/free-solid-svg-icons";
+import { getNewAddress } from "../store/newOrderSlice";
 
 export const Checkout = () => {
   const productsData = useSelector((state) => state.productsData.data);
@@ -23,7 +24,7 @@ export const Checkout = () => {
   const [taxes, setTaxes] = useState(1);
   const [isTaxesCon, setIsTaxesCon] = useState(false);
   const [selectAddress, setSelctetAddress] = useState("");
-
+  const dispatch = useDispatch();
   useEffect(() => {
     setSubTotal(
       productsData.reduce((prev, current) => {
@@ -151,190 +152,192 @@ export const Checkout = () => {
               </div>
             )}
           </div>
-          <div className="flex">
-            <div
-              className="pt-0 px-[30px] pb-[30px] mb-0 max-w-[63%]"
-              style={{ flexBasis: "63%" }}
-            >
-              <div className="pt-[15px] border-t-2 border-t-[#ddd] ">
-                <h3 className="text-[1.1em] font-bold pt-[10px] uppercase text-[#555555] mb-[0.5em] mt-0">
-                  billing details
-                </h3>
-              </div>
 
-              <div className="flex">
+          <Form method="POST">
+            <div className="flex">
+              <div
+                className="pt-0 px-[30px] pb-[30px] mb-0 max-w-[63%]"
+                style={{ flexBasis: "63%" }}
+              >
+                <div className="pt-[15px] border-t-2 border-t-[#ddd] ">
+                  <h3 className="text-[1.1em] font-bold pt-[10px] uppercase text-[#555555] mb-[0.5em] mt-0">
+                    billing details
+                  </h3>
+                </div>
+
+                <div className="flex">
+                  <p className="text-[0.9em] mr-[1em]">
+                    <label className="text-[#222] font-bold mb-[0.4em] block">
+                      First name *
+                    </label>
+                    <input
+                      name="billing_first_name"
+                      className="bg-white inputShadow text-[#333] outline-none outline-offset-2 border border-[#ddd] text-[0.97em] h-[2.7em] max-w-full px-[0.75em] mb-[1em] touch-manipulation "
+                    />
+                  </p>
+                  <p className="text-[0.9em] ml-[1em]">
+                    <label className="text-[#222] font-bold mb-[0.4em] block">
+                      Last name *
+                    </label>
+                    <input
+                      name="billing_Last_name"
+                      className="bg-white inputShadow text-[#333] outline-none outline-offset-2 border border-[#ddd] text-[0.97em] h-[2.7em] max-w-full px-[0.75em] mb-[1em] touch-manipulation "
+                    />
+                  </p>
+                </div>
+                <p className="text-[0.9em]">
+                  <label className="text-[#222] font-bold mb-[0.4em] block">
+                    Name of company (optional)
+                  </label>
+                  <input
+                    name="billing_Company_name"
+                    className="w-full bg-white inputShadow text-[#333] outline-none outline-offset-2 border border-[#ddd] text-[0.97em] h-[2.7em] max-w-full px-[0.75em] mb-[1em] touch-manipulation "
+                  />
+                </p>
+                <div className="flex">
+                  <p className="text-[0.9em] mr-[1em]">
+                    <label className="text-[#222] font-bold mb-[0.4em] block">
+                      Address (optional)
+                    </label>
+                    <input
+                      name="billing_address_1"
+                      className="bg-white inputShadow text-[#333] outline-none outline-offset-2 border border-[#ddd] text-[0.97em] h-[2.7em] max-w-full px-[0.75em] mb-[1em] touch-manipulation "
+                      placeholder="Lane number and street name"
+                    />
+                  </p>
+                  <p className="text-[0.9em] ml-[1em] self-end">
+                    <input
+                      name="billing_address_2"
+                      className="bg-white inputShadow text-[#333] outline-none outline-offset-2 border border-[#ddd] text-[0.97em] h-[2.7em] max-w-full px-[0.75em] mb-[1em] touch-manipulation "
+                      placeholder="Building, apartment, lot, etc. (optional)"
+                    />
+                  </p>
+                </div>
+                <p className="text-[0.9em]">
+                  <label className="text-[#222] font-bold mb-[0.4em] block">
+                    Wilaya *
+                  </label>
+                  <select
+                    className="px-[0.75em] w-full outline-none align-middle cursor-pointer  mb-[1rem] text-[#444] whitespace-nowrap bg-white border border-[#ddd] text-[.97em] h-[2.7em]"
+                    name="billing_State"
+                    defaultValue={newOrder.address1.wilaya}
+                    onChange={(p) => {
+                      setSelctetAddress(
+                        p.target.options[p.target.selectedIndex].textContent
+                      );
+                      setIsTaxesCon(true);
+                    }}
+                  >
+                    <option value={""} disabled>
+                      Région / Département
+                    </option>
+                    <option>Adrar</option>
+                    <option>Chlef</option>
+                    <option>Laghouat</option>
+                    <option>Oum El Bouaghi</option>
+                    <option>Batna</option>
+                    <option>Béjaïa</option>
+                    <option>Biskra</option>
+                    <option>Béchar</option>
+                    <option>Blida</option>
+                    <option>Bouira</option>
+                    <option>Tamanrasset</option>
+                    <option>Tébessa</option>
+                    <option>Tlemcen</option>
+                    <option>Tiaret</option>
+                    <option>Tizi Ouzou</option>
+                    <option>Alger</option>
+                    <option>Djelfa</option>
+                    <option>Jijel</option>
+                    <option>Sétif</option>
+                    <option>Saïda</option>
+                    <option>Skikda</option>
+                    <option>Sidi Bel Abbès</option>
+                    <option>Annaba</option>
+                    <option>Guelma</option>
+                    <option>Constantine</option>
+                    <option>Médéa</option>
+                    <option>Mostaganem</option>
+                    <option>M’Sila</option>
+                    <option>Mascara</option>
+                    <option>Ouargla</option>
+                    <option>Oran</option>
+                    <option>El Bayadh</option>
+                    <option>Illizi</option>
+                    <option>Bordj Bou Arréridj</option>
+                    <option>Boumerdès</option>
+                    <option>El Tarf</option>
+                    <option>Tindouf</option>
+                    <option>Tissemsilt</option>
+                    <option>El Oued</option>
+                    <option>Khenchela</option>
+                    <option>Souk Ahras</option>
+                    <option>Tipasa</option>
+                    <option>Mila</option>
+                    <option>Aïn Defla</option>
+                    <option>Naâma</option>
+                    <option>Aïn Témouchent</option>
+                    <option>Ghardaïa</option>
+                    <option>Relizane</option>
+                  </select>
+                </p>
+                <p className="text-[0.9em] mr-[1em] w-full">
+                  <label className="text-[#222] font-bold mb-[0.4em] block">
+                    City *
+                  </label>
+                  <input
+                    name="billing_city"
+                    className="bg-white inputShadow w-full text-[#333] outline-none outline-offset-2 border border-[#ddd] text-[0.97em] h-[2.7em] max-w-full px-[0.75em] mb-[1em] touch-manipulation "
+                    defaultValue={newOrder.address1.city}
+                  />
+                </p>
+                <p className="text-[0.9em] mr-[1em] w-full">
+                  <label className="text-[#222] font-bold mb-[0.4em] block">
+                    Phone number *
+                  </label>
+                  <input
+                    name="billing_phone"
+                    className="bg-white inputShadow w-full text-[#333] outline-none outline-offset-2 border border-[#ddd] text-[0.97em] h-[2.7em] max-w-full px-[0.75em] mb-[1em] touch-manipulation "
+                  />
+                </p>
+                <p className="text-[0.9em] mr-[1em] w-full">
+                  <label className="text-[#222] font-bold mb-[0.4em] block">
+                    Email
+                  </label>
+                  <input
+                    name="billing_email"
+                    className="bg-white inputShadow w-full text-[#333] outline-none outline-offset-2 border border-[#ddd] text-[0.97em] h-[2.7em] max-w-full px-[0.75em] mb-[1em] touch-manipulation "
+                  />
+                </p>
+                <p className="text-[0.95em]">
+                  <input
+                    name="ship_to_different_address"
+                    className="mr-[0.5em]"
+                    type="checkbox"
+                    value={1}
+                  />
+                  <span className="text-[#222] ">
+                    Ship to a different address ?
+                  </span>
+                </p>
                 <p className="text-[0.9em] mr-[1em]">
                   <label className="text-[#222] font-bold mb-[0.4em] block">
-                    First name *
+                    Order Notes (optional)
                   </label>
-                  <input
-                    name="billing_first_name"
-                    className="bg-white inputShadow text-[#333] outline-none outline-offset-2 border border-[#ddd] text-[0.97em] h-[2.7em] max-w-full px-[0.75em] mb-[1em] touch-manipulation "
-                  />
-                </p>
-                <p className="text-[0.9em] ml-[1em]">
-                  <label className="text-[#222] font-bold mb-[0.4em] block">
-                    Last name *
-                  </label>
-                  <input
-                    name="billing_Last_name"
-                    className="bg-white inputShadow text-[#333] outline-none outline-offset-2 border border-[#ddd] text-[0.97em] h-[2.7em] max-w-full px-[0.75em] mb-[1em] touch-manipulation "
-                  />
+                  <textarea
+                    name="order_comments"
+                    rows={"2"}
+                    cols={"5"}
+                    className=" h-[120px] w-full bg-white inputShadow text-[#333] outline-none outline-offset-2 border border-[#ddd] text-[1.1em]  p-[1em] mb-[1em] touch-manipulation "
+                    placeholder="Comments regarding your order, e.g. delivery instructions."
+                  ></textarea>
                 </p>
               </div>
-              <p className="text-[0.9em]">
-                <label className="text-[#222] font-bold mb-[0.4em] block">
-                  Name of company (optional)
-                </label>
-                <input
-                  name="billing_Company_name"
-                  className="w-full bg-white inputShadow text-[#333] outline-none outline-offset-2 border border-[#ddd] text-[0.97em] h-[2.7em] max-w-full px-[0.75em] mb-[1em] touch-manipulation "
-                />
-              </p>
-              <div className="flex">
-                <p className="text-[0.9em] mr-[1em]">
-                  <label className="text-[#222] font-bold mb-[0.4em] block">
-                    Address (optional)
-                  </label>
-                  <input
-                    name="billing_address_1"
-                    className="bg-white inputShadow text-[#333] outline-none outline-offset-2 border border-[#ddd] text-[0.97em] h-[2.7em] max-w-full px-[0.75em] mb-[1em] touch-manipulation "
-                    placeholder="Lane number and street name"
-                  />
-                </p>
-                <p className="text-[0.9em] ml-[1em] self-end">
-                  <input
-                    name="billing_address_2"
-                    className="bg-white inputShadow text-[#333] outline-none outline-offset-2 border border-[#ddd] text-[0.97em] h-[2.7em] max-w-full px-[0.75em] mb-[1em] touch-manipulation "
-                    placeholder="Building, apartment, lot, etc. (optional)"
-                  />
-                </p>
-              </div>
-              <p className="text-[0.9em]">
-                <label className="text-[#222] font-bold mb-[0.4em] block">
-                  Wilaya *
-                </label>
-                <select
-                  className="px-[0.75em] w-full outline-none align-middle cursor-pointer  mb-[1rem] text-[#444] whitespace-nowrap bg-white border border-[#ddd] text-[.97em] h-[2.7em]"
-                  name="billing_State"
-                  value={newOrder.address1.wilaya}
-                  onChange={(p) => {
-                    setSelctetAddress(
-                      p.target.options[p.target.selectedIndex].textContent
-                    );
-                    setIsTaxesCon(true);
-                  }}
-                >
-                  <option value="" disabled selected>
-                    Région / Département
-                  </option>
-                  <option value="DZ-01">Adrar</option>
-                  <option value="DZ-02">Chlef</option>
-                  <option value="DZ-03">Laghouat</option>
-                  <option value="DZ-04">Oum El Bouaghi</option>
-                  <option value="DZ-05">Batna</option>
-                  <option value="DZ-06">Béjaïa</option>
-                  <option value="DZ-07">Biskra</option>
-                  <option value="DZ-08">Béchar</option>
-                  <option value="DZ-09">Blida</option>
-                  <option value="DZ-10">Bouira</option>
-                  <option value="DZ-11">Tamanrasset</option>
-                  <option value="DZ-12">Tébessa</option>
-                  <option value="DZ-13">Tlemcen</option>
-                  <option value="DZ-14">Tiaret</option>
-                  <option value="DZ-15">Tizi Ouzou</option>
-                  <option value="DZ-16">Alger</option>
-                  <option value="DZ-17">Djelfa</option>
-                  <option value="DZ-18">Jijel</option>
-                  <option value="DZ-19">Sétif</option>
-                  <option value="DZ-20">Saïda</option>
-                  <option value="DZ-21">Skikda</option>
-                  <option value="DZ-22">Sidi Bel Abbès</option>
-                  <option value="DZ-23">Annaba</option>
-                  <option value="DZ-24">Guelma</option>
-                  <option value="DZ-25">Constantine</option>
-                  <option value="DZ-26">Médéa</option>
-                  <option value="DZ-27">Mostaganem</option>
-                  <option value="DZ-28">M’Sila</option>
-                  <option value="DZ-29">Mascara</option>
-                  <option value="DZ-30">Ouargla</option>
-                  <option value="DZ-31">Oran</option>
-                  <option value="DZ-32">El Bayadh</option>
-                  <option value="DZ-33">Illizi</option>
-                  <option value="DZ-34">Bordj Bou Arréridj</option>
-                  <option value="DZ-35">Boumerdès</option>
-                  <option value="DZ-36">El Tarf</option>
-                  <option value="DZ-37">Tindouf</option>
-                  <option value="DZ-38">Tissemsilt</option>
-                  <option value="DZ-39">El Oued</option>
-                  <option value="DZ-40">Khenchela</option>
-                  <option value="DZ-41">Souk Ahras</option>
-                  <option value="DZ-42">Tipasa</option>
-                  <option value="DZ-43">Mila</option>
-                  <option value="DZ-44">Aïn Defla</option>
-                  <option value="DZ-45">Naâma</option>
-                  <option value="DZ-46">Aïn Témouchent</option>
-                  <option value="DZ-47">Ghardaïa</option>
-                  <option value="DZ-48">Relizane</option>
-                </select>
-              </p>
-              <p className="text-[0.9em] mr-[1em] w-full">
-                <label className="text-[#222] font-bold mb-[0.4em] block">
-                  City *
-                </label>
-                <input
-                  name="billing_city"
-                  className="bg-white inputShadow w-full text-[#333] outline-none outline-offset-2 border border-[#ddd] text-[0.97em] h-[2.7em] max-w-full px-[0.75em] mb-[1em] touch-manipulation "
-                  defaultValue={newOrder.address1.city}
-                />
-              </p>
-              <p className="text-[0.9em] mr-[1em] w-full">
-                <label className="text-[#222] font-bold mb-[0.4em] block">
-                  Phone number *
-                </label>
-                <input
-                  name="billing_phone"
-                  className="bg-white inputShadow w-full text-[#333] outline-none outline-offset-2 border border-[#ddd] text-[0.97em] h-[2.7em] max-w-full px-[0.75em] mb-[1em] touch-manipulation "
-                />
-              </p>
-              <p className="text-[0.9em] mr-[1em] w-full">
-                <label className="text-[#222] font-bold mb-[0.4em] block">
-                  Email
-                </label>
-                <input
-                  name="billing_email"
-                  className="bg-white inputShadow w-full text-[#333] outline-none outline-offset-2 border border-[#ddd] text-[0.97em] h-[2.7em] max-w-full px-[0.75em] mb-[1em] touch-manipulation "
-                />
-              </p>
-              <p className="text-[0.95em]">
-                <input
-                  name="ship_to_different_address"
-                  className="mr-[0.5em]"
-                  type="checkbox"
-                  value={1}
-                />
-                <span className="text-[#222] ">
-                  Ship to a different address ?
-                </span>
-              </p>
-              <p className="text-[0.9em] mr-[1em]">
-                <label className="text-[#222] font-bold mb-[0.4em] block">
-                  Order Notes (optional)
-                </label>
-                <textarea
-                  name="order_comments"
-                  rows={"2"}
-                  cols={"5"}
-                  className=" h-[120px] w-full bg-white inputShadow text-[#333] outline-none outline-offset-2 border border-[#ddd] text-[1.1em]  p-[1em] mb-[1em] touch-manipulation "
-                  placeholder="Comments regarding your order, e.g. delivery instructions."
-                ></textarea>
-              </p>
-            </div>
-            <div
-              className="mb-0 max-w-[37%] relative "
-              style={{ flexBasis: "37%" }}
-            >
-              {/* <table className="w-full">
+              <div
+                className="mb-0 max-w-[37%] relative "
+                style={{ flexBasis: "37%" }}
+              >
+                {/* <table className="w-full">
                 <thead>
                   <tr className="uppercase">
                     <th className=" pb-[10px] border-b-[3px] text-[1em] border-b-[#ececec]  text-left leading-[1.05em] tracking-[.05em] ">
@@ -354,89 +357,106 @@ export const Checkout = () => {
                   </tr>
                 </tbody>
               </table> */}
-              <div
-                className="top-0 border-2 rounded shadow border-[#446084] pt-[30px] px-[15px] pb-[30px] mb-0  "
-                ref={billing}
-              >
-                <div className="text-[1.2em] pb-[1em] px-[1em] border-t-[#f1f1f2] border-t border-b-[3px]">
-                  <div className="flex items-center justify-between pt-[1rem] ">
-                    <p className="text-[#2e2f32] font-bold text-[1rem] self-start">
-                      SubTotal ({itemsNumber}
-                      {itemsNumber === 1 ? " item" : " items"})
-                    </p>
-                    {isSaving ? (
-                      <div className="text-[1rem] block">
-                        <p className="line-through text-[#46474a] text-[1rem]">
+                <div
+                  className="top-0 border-2 rounded shadow border-[#446084] pt-[30px] px-[15px] pb-[30px] mb-0  "
+                  ref={billing}
+                >
+                  <div className="text-[1.2em] pb-[1em] px-[1em] border-t-[#f1f1f2] border-t border-b-[3px]">
+                    <div className="flex items-center justify-between pt-[1rem] ">
+                      <p className="text-[#2e2f32] font-bold text-[1rem] self-start">
+                        SubTotal ({itemsNumber}
+                        {itemsNumber === 1 ? " item" : " items"})
+                      </p>
+                      {isSaving ? (
+                        <div className="text-[1rem] block">
+                          <p className="line-through text-[#46474a] text-[1rem]">
+                            ${subTotal}
+                          </p>
+                          <p className="">${subTotal - savingAmount}</p>
+                        </div>
+                      ) : (
+                        <p className="text-[1rem] text-[#46474a] ">
                           ${subTotal}
                         </p>
-                        <p className="">${subTotal - savingAmount}</p>
+                      )}
+                    </div>
+                    {isSaving && (
+                      <div className="flex items-center justify-between pt-[1rem]">
+                        <p className="text-[#46474a] font-bold text-[1rem]">
+                          Saving
+                        </p>
+                        <div className="p-[.25rem] bg-[#eaf3e6] text-[#2a8703] rounded-[.25rem] text-[1rem]">
+                          -${savingAmount}
+                        </div>
                       </div>
-                    ) : (
-                      <p className="text-[1rem] text-[#46474a] ">${subTotal}</p>
                     )}
-                  </div>
-                  {isSaving && (
-                    <div className="flex items-center justify-between pt-[1rem]">
-                      <p className="text-[#46474a] font-bold text-[1rem]">
-                        Saving
-                      </p>
-                      <div className="p-[.25rem] bg-[#eaf3e6] text-[#2a8703] rounded-[.25rem] text-[1rem]">
-                        -${savingAmount}
+                    <div className="flex items-center justify-between text-[.875rem] text-[#46474a] pt-[0.25rem]">
+                      {subTotal >= 35 ? (
+                        <>
+                          {" "}
+                          <p className="">Shipping</p>
+                          <p className="text-[#2a8703]">Free</p>{" "}
+                        </>
+                      ) : (
+                        <>
+                          {" "}
+                          <p className="">Shipping (below $35 order minimum)</p>
+                          <p>$6.99</p>
+                        </>
+                      )}
+                    </div>
+
+                    <div className="pt-[1rem] pb-[1rem] text-[#000] border-b-[#f1f1f2] border-b">
+                      <div className="flex items-center justify-between text-[1rem] ">
+                        <p className="font-bold">Taxes</p>
+                        <p className="">{isTaxesCon ? "No Fees" : "Pending"}</p>
                       </div>
-                    </div>
-                  )}
-                  <div className="flex items-center justify-between text-[.875rem] text-[#46474a] pt-[0.25rem]">
-                    {subTotal >= 35 ? (
-                      <>
-                        {" "}
-                        <p className="">Shipping</p>
-                        <p className="text-[#2a8703]">Free</p>{" "}
-                      </>
-                    ) : (
-                      <>
-                        {" "}
-                        <p className="">Shipping (below $35 order minimum)</p>
-                        <p>$6.99</p>
-                      </>
-                    )}
-                  </div>
-
-                  <div className="pt-[1rem] pb-[1rem] text-[#000] border-b-[#f1f1f2] border-b">
-                    <div className="flex items-center justify-between text-[1rem] ">
-                      <p className="font-bold">Taxes</p>
-                      <p className="">{isTaxesCon ? "No Fees" : "Pending"}</p>
-                    </div>
-                    {!isTaxesCon && (
-                      <span className="text-[.75rem] mt-[.25rem] text-[#74767c] ">
-                        Calculated once address is confirmed
-                      </span>
-                    )}
-                  </div>
-
-                  <div className=" border-b-[#f1f1f2] ">
-                    <div className="flex items-center justify-between text-[1.25rem] pb-[1rem] pt-[1rem] text-[#2e2f32] font-bold ">
-                      <p>Estimated Total</p>
-                      <div className="text-[1.125rem] ">${subTotal}</div>
-                    </div>
-                    <div className="text-[1.125rem] flex items-center justify-between pt-[0.5rem] ">
-                      <div className="flex items-center">
-                        <span className="text-[1.125rem] font-normal">
-                          Temporary hold
+                      {!isTaxesCon && (
+                        <span className="text-[.75rem] mt-[.25rem] text-[#74767c] ">
+                          Calculated once address is confirmed
                         </span>
-                        <button className="ml-[0.25rem] text-[1rem] h-[2rem] inline-flex items-center justify-center cursor-pointer rounded-[62.5rem] whitespace-nowrap transition_I leading-5 hover:text-[#004f9a] ">
-                          <FontAwesomeIcon
-                            className="h-[1rem] w-[1rem] "
-                            icon={faCircleInfo}
-                          />
-                        </button>
-                      </div>
-                      <p>${subTotal}</p>
+                      )}
                     </div>
+
+                    <div className=" border-b-[#f1f1f2] ">
+                      <div className="flex items-center justify-between text-[1.25rem] pb-[1rem] pt-[1rem] text-[#2e2f32] font-bold ">
+                        <p>Estimated Total</p>
+                        <div className="text-[1.125rem] ">${subTotal}</div>
+                      </div>
+                      <div className="text-[1.125rem] flex items-center justify-between pt-[0.5rem] ">
+                        <div className="flex items-center">
+                          <span className="text-[1.125rem] font-normal">
+                            Temporary hold
+                          </span>
+                          <button className="ml-[0.25rem] text-[1rem] h-[2rem] inline-flex items-center justify-center cursor-pointer rounded-[62.5rem] whitespace-nowrap transition_I leading-5 hover:text-[#004f9a] ">
+                            <FontAwesomeIcon
+                              className="h-[1rem] w-[1rem] "
+                              icon={faCircleInfo}
+                            />
+                          </button>
+                        </div>
+                        <p>${subTotal}</p>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="text-[1rem] py-[1rem] px-[15px]">
+                    <p className="font-bold">Cach on delivery</p>
+                    <p className="text-[.875rem]">
+                      Pay with cash upon delivery.
+                    </p>
+                    <button
+                      className="mt-[1rem] py-0 px-[1.5rem] mb-[1rem] text-[1rem] h-[2.5rem] flex w-1/2 bg-[#0071dc] text-[#fff] font-bold items-center appearance-none border-0 rounded-[62.5rem] cursor-pointer justify-center whitespace-nowrap"
+                      type="submit"
+                      name="intent"
+                      value="checkout"
+                    >
+                      COMMANDER
+                    </button>
                   </div>
                 </div>
               </div>
             </div>
-          </div>
+          </Form>
         </div>
       )}
     </section>

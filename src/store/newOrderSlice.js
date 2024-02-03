@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialData = {
-  order: {},
+  order: { address1: { wilaya: "", city: "" } },
 };
 export const newOrderUser = createSlice({
   name: "order",
