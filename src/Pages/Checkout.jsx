@@ -46,7 +46,7 @@ export const Checkout = () => {
   //   check_word: false,
   // });
 
-  console.log("check number", inputCheckName.check_word);
+  // console.log("check number", inputCheckName.check_word);
   useEffect(() => {
     setSubTotal(
       productsData.reduce((prev, current) => {
@@ -205,7 +205,12 @@ export const Checkout = () => {
                     </label>
                     <input
                       name="billing_first_name"
-                      className="bg-white inputShadow text-[#333] outline-none outline-offset-2 border border-[#ddd] text-[0.97em] h-[2.7em] max-w-full px-[0.75em] mb-[1em] touch-manipulation "
+                      className={
+                        !Object.hasOwn(inputErrorForm, "billing_first_name")
+                          ? "bg-white inputShadow text-[#333] outline-none outline-offset-2 border border-[#ddd] text-[0.97em] h-[2.7em] max-w-full px-[0.75em] mb-[1em] touch-manipulation "
+                          : "bg-white inputShadow text-[#333] outline-none outline-offset-2 border border-red-600 text-[0.97em] h-[2.7em] max-w-full px-[0.75em] mb-[1em] touch-manipulation "
+                      }
+
                       // onChange={(p) => {
                       //   dispatch({
                       //     payload: p.target.value,
@@ -229,7 +234,11 @@ export const Checkout = () => {
                     </label>
                     <input
                       name="billing_Last_name"
-                      className="bg-white inputShadow text-[#333] outline-none outline-offset-2 border border-[#ddd] text-[0.97em] h-[2.7em] max-w-full px-[0.75em] mb-[1em] touch-manipulation "
+                      className={
+                        !Object.hasOwn(inputErrorForm, "billing_Last_name")
+                          ? "bg-white inputShadow text-[#333] outline-none outline-offset-2 border border-[#ddd] text-[0.97em] h-[2.7em] max-w-full px-[0.75em] mb-[1em] touch-manipulation "
+                          : "bg-white inputShadow text-[#333] outline-none outline-offset-2 border border-red-600 text-[0.97em] h-[2.7em] max-w-full px-[0.75em] mb-[1em] touch-manipulation "
+                      }
                     />
                     {Object.hasOwn(inputErrorForm, "billing_Last_name") && (
                       <p className="text-[0.875rem] -top-[10px] relative text-red-500 ">
@@ -271,7 +280,11 @@ export const Checkout = () => {
                     Wilaya *
                   </label>
                   <select
-                    className="px-[0.75em] w-full outline-none align-middle cursor-pointer  mb-[1rem] text-[#444] whitespace-nowrap bg-white border border-[#ddd] text-[.97em] h-[2.7em]"
+                    className={
+                      !Object.hasOwn(inputErrorForm, "billing_State")
+                        ? "px-[0.75em] w-full outline-none align-middle cursor-pointer  mb-[1rem] text-[#444] whitespace-nowrap bg-white border border-[#ddd] text-[.97em] h-[2.7em]"
+                        : "px-[0.75em] w-full outline-none align-middle cursor-pointer  mb-[1rem] text-[#444] whitespace-nowrap bg-white border border-red-700 text-[.97em] h-[2.7em]"
+                    }
                     name="billing_State"
                     defaultValue={newOrder.address1.wilaya}
                     onChange={(p) => {
@@ -343,7 +356,11 @@ export const Checkout = () => {
                   </label>
                   <input
                     name="billing_city"
-                    className="bg-white inputShadow w-full text-[#333] outline-none outline-offset-2 border border-[#ddd] text-[0.97em] h-[2.7em] max-w-full px-[0.75em] mb-[1em] touch-manipulation "
+                    className={
+                      !Object.hasOwn(inputErrorForm, "billing_city")
+                        ? "bg-white inputShadow w-full text-[#333] outline-none outline-offset-2 border border-[#ddd] text-[0.97em] h-[2.7em] max-w-full px-[0.75em] mb-[1em] touch-manipulation "
+                        : "bg-white inputShadow w-full text-[#333] outline-none outline-offset-2 border border-red-600 text-[0.97em] h-[2.7em] max-w-full px-[0.75em] mb-[1em] touch-manipulation "
+                    }
                     defaultValue={newOrder.address1.city}
                   />
                   {Object.hasOwn(inputErrorForm, "billing_city") && (
@@ -358,7 +375,13 @@ export const Checkout = () => {
                   </label>
                   <input
                     name="billing_phone"
-                    className="bg-white inputShadow w-full text-[#333] outline-none outline-offset-2 border border-[#ddd] text-[0.97em] h-[2.7em] max-w-full px-[0.75em] mb-[1em] touch-manipulation "
+                    className={
+                      !Object.hasOwn(inputErrorForm, "billing_phone")
+                        ? "bg-white inputShadow w-full text-[#333] outline-none outline-offset-2 border border-[#ddd] text-[0.97em] h-[2.7em] max-w-full px-[0.75em] mb-[1em] touch-manipulation "
+                        : "bg-white inputShadow w-full text-[#333] outline-none outline-offset-2 border border-red-600 text-[0.97em] h-[2.7em] max-w-full px-[0.75em] mb-[1em] touch-manipulation "
+                    }
+                    pattern="0[5-7][0-9]{8}|[+1-3]{4}[5-7][0-9]{8}|0[2-4][0-9]{7}"
+                    title="Enter a valid phone number"
                   />
                   {Object.hasOwn(inputErrorForm, "billing_phone") && (
                     <p className="text-[0.875rem] -top-[10px] relative text-red-500 ">
@@ -371,9 +394,21 @@ export const Checkout = () => {
                     Email
                   </label>
                   <input
+                    type="email"
+                    title="Invalide email"
                     name="billing_email"
-                    className="bg-white inputShadow w-full text-[#333] outline-none outline-offset-2 border border-[#ddd] text-[0.97em] h-[2.7em] max-w-full px-[0.75em] mb-[1em] touch-manipulation "
+                    className={
+                      !Object.hasOwn(inputErrorForm, "billing_email")
+                        ? "bg-white inputShadow w-full text-[#333] outline-none outline-offset-2 border border-[#ddd] text-[0.97em] h-[2.7em] max-w-full px-[0.75em] mb-[1em] touch-manipulation "
+                        : "bg-white inputShadow w-full text-[#333] outline-none outline-offset-2 border border-red-600 text-[0.97em] h-[2.7em] max-w-full px-[0.75em] mb-[1em] touch-manipulation "
+                    }
+                    
                   />
+                  {Object.hasOwn(inputErrorForm, "billing_email") && (
+                    <p className="text-[0.875rem] -top-[10px] relative text-red-500 ">
+                      {inputErrorForm.billing_email.message}
+                    </p>
+                  )}
                 </p>
                 <p className="text-[0.95em]">
                   <input

@@ -2,7 +2,11 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import App from "./App.jsx";
 import "./index.css";
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import {
+  createBrowserRouter,
+  redirect,
+  RouterProvider,
+} from "react-router-dom";
 import { HeroSection } from "./Pages/HeroSection.jsx";
 // import function to register Swiper custom elements
 import { register } from "swiper/element/bundle";
@@ -11,7 +15,9 @@ import { Provider } from "react-redux";
 import { Cart } from "./Pages/Cart.jsx";
 import { Products } from "./Pages/Product.jsx";
 import { Checkout } from "./Pages/Checkout.jsx";
+import { CommandTermine } from "./Pages/CommandTermine.jsx";
 // register Swiper custom elements
+
 register();
 const router = createBrowserRouter([
   {
@@ -72,6 +78,9 @@ const router = createBrowserRouter([
         path: "/checkout",
         element: <Checkout />,
         action: async ({ request }) => {
+          function hasNumber(inputString) {
+            return /\d/.test(inputString);
+          }
           try {
             let arrayError = [];
             const formData = await request.formData();
@@ -127,8 +136,16 @@ const router = createBrowserRouter([
             if (intent === "checkout") {
               let OrderInformation = [];
               let arrayOfErrors = {};
+              const formDataObject = Array.from(formData.entries()).reduce(
+                (acc, [key, value]) => {
+                  acc[key] = value;
+                  return acc;
+                },
+                {}
+              );
+
+              console.log(formDataObject);
               for (const [name, value] of formData.entries()) {
-                OrderInformation.push({ [name]: value });
                 if (
                   value == "" &&
                   name !== "billing_address_1" &&
@@ -145,23 +162,39 @@ const router = createBrowserRouter([
                   };
                 }
               }
-              console.log(arrayOfErrors);
-              // const res = await fetch(
-              //   "http://localhost:5000/api/validate-checkout",
-              //   {
-              //     method: "POST",
-              //     headers: {
-              //       "Content-Type": "application/json",
-              //     },
-              //     body: JSON.stringify(OrderInformation),
-              //   }
-              // );
 
-              // if (!res.ok) {
-              //   throw new Error("Server error");
-              // }
-              // const data = await res.json();
-              return arrayOfErrors;
+              if (hasNumber(formData.get("billing_first_name"))) {
+                arrayOfErrors["billing_first_name"] = {
+                  message: `Invalide first name syntaxe`,
+                };
+              }
+              if (hasNumber(formData.get("billing_Last_name"))) {
+                arrayOfErrors["billing_Last_name"] = {
+                  message: `Invalide last name syntaxe`,
+                };
+              }
+              if (hasNumber(formData.get("billing_city"))) {
+                arrayOfErrors["billing_city"] = {
+                  message: `Invalide City syntaxe`,
+                };
+              }
+
+              if (Object.keys(arrayOfErrors).length) {
+                return arrayOfErrors;
+              }
+
+              const res = await fetch("http://localhost:5000/api/orders", {
+                method: "POST",
+                headers: {
+                  "Content-Type": "application/json",
+                },
+                body: JSON.stringify([formDataObject]),
+              });
+
+              if (!res.ok) {
+                throw new Error("Server error");
+              }
+              return redirect("/commandTermine");
             }
           } catch (error) {
             console.error(error);
@@ -169,6 +202,10 @@ const router = createBrowserRouter([
             return null;
           }
         },
+      },
+      {
+        path: "/commandTermine",
+        element: <CommandTermine />,
       },
       {
         path: "/products",
