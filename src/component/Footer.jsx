@@ -91,7 +91,7 @@ export const Footer = () => {
         </div>
       </div>
       <div className="mt-8 border-t pt-8 text-center text-sm text-gray-500 dark:text-gray-400">
-        <div>© 2024 Our E-commerce. All rights reserved.</div>
+        <div>© 2024 Our E-commerce. All rights reserved. build with <a href="" >AH</a></div>
         <div className="mt-2 space-x-4">
           <Link className="hover:underline" to={"/"}>
             Privacy Policy
