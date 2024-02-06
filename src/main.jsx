@@ -194,6 +194,9 @@ const router = createBrowserRouter([
               if (!res.ok) {
                 throw new Error("Server error");
               }
+              res.json().then((data) => {
+                console.log(data.id);
+              });
               return redirect("/commandTermine");
             }
           } catch (error) {

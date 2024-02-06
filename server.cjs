@@ -1,6 +1,8 @@
 const express = require("express");
 const cors = require("cors");
 const path = require("path");
+
+const { google } = require("googleapis");
 const bodyParser = require("body-parser");
 const app = express();
 const port = 5000;
@@ -29,12 +31,30 @@ async function run() {
     throw error;
   }
 }
-
 // Endpoint to handle new order requests
 app.post("/api/orders", async (req, res) => {
   try {
+    const auth = new google.auth.GoogleAuth({
+      keyFile: "credentials.json",
+      scopes: "https://www.googleapis.com/auth/spreadsheets",
+    });
+    const spreadsheetId = "1iDD35caRGiRh6WHyMn66XxC3_VFTvB9EMKUl-K-LMtE";
+    // create client instance for auth
+    const cliente = await auth.getClient();
+    // create instance of Google Sheets API
+
+    const googleSheets = google.sheets({ version: "v4", auth: cliente });
+
+    //get rows data
+    const getRows = await googleSheets.spreadsheets.values.get({
+      auth,
+      spreadsheetId,
+      range: "Sheet1",
+    });
+    //Write in google sheet API
+
     const newOrdersData = req.body;
-    // console.log(newOrdersData);
+
     // Insert the new order data into a MongoDB collection
     const database = client.db("planterBot");
     const collection = database.collection("NEWOrder");
@@ -43,19 +63,60 @@ app.post("/api/orders", async (req, res) => {
 
     // Check if the insertion was successful
     if (result.insertedCount === newOrdersData.length) {
+      // Get the current date and time
+      const currentDate = new Date();
+
+      // Create an object to store the current date and time
+
+      // Get the current date
+      const year = currentDate.getFullYear();
+      const month = currentDate.getMonth() + 1; // Note: Months are zero-indexed (0 for January)
+      const day = currentDate.getDate();
+
+      // Get the current time
+      const hours = currentDate.getHours();
+      const minutes = currentDate.getMinutes();
+      const seconds = currentDate.getSeconds();
+
+      const writeRows = await googleSheets.spreadsheets.values.append({
+        auth,
+        spreadsheetId,
+        range: "Sheet1",
+        valueInputOption: "USER_ENTERED",
+        resource: {
+          values: [
+            [
+              `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`,
+              result.insertedIds[0],
+              newOrdersData._id,
+              newOrdersData.billing_Last_name,
+              newOrdersData.billing_first_name,
+              newOrdersData.billing_Company_name,
+              newOrdersData.billing_address_1,
+              newOrdersData.billing_address_2,
+              newOrdersData.billing_State,
+              newOrdersData.billing_city,
+              newOrdersData.billing_phone,
+              newOrdersData.billing_email,
+              newOrdersData.order_comments,
+              newOrdersData.intent,
+            ],
+          ],
+        },
+      });
       res.status(201).json({
         message: "New orders added successfully",
         data: newOrdersData,
+        id: result.insertedIds,
       });
     } else {
-      res.status(500).json({ error: "Failed to add new orders" });
+      throw new Error("Failed to add new orders");
     }
   } catch (error) {
     console.error("Error adding a new order:", error.message);
     res.status(500).json({ error: "Internal server error" });
   }
 });
-
 app.post("/api/validate-code", async (req, res) => {
   try {
     const userCodePromo = req.body.userCodePromo;
