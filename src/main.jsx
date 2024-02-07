@@ -16,6 +16,7 @@ import { Cart } from "./Pages/Cart.jsx";
 import { Products } from "./Pages/Product.jsx";
 import { Checkout } from "./Pages/Checkout.jsx";
 import { CommandTermine } from "./Pages/CommandTermine.jsx";
+
 // register Swiper custom elements
 
 register();
@@ -138,12 +139,15 @@ const router = createBrowserRouter([
               let arrayOfErrors = {};
               const formDataObject = Array.from(formData.entries()).reduce(
                 (acc, [key, value]) => {
-                  acc[key] = value;
+                  if (key === "productData") {
+                    acc[key] = JSON.parse(value);
+                  } else {
+                    acc[key] = value;
+                  }
                   return acc;
                 },
                 {}
               );
-
               console.log(formDataObject);
               for (const [name, value] of formData.entries()) {
                 if (
@@ -195,7 +199,7 @@ const router = createBrowserRouter([
                 throw new Error("Server error");
               }
               res.json().then((data) => {
-                console.log(data.id);
+                console.log("DATA :", data.data);
               });
               return redirect("/commandTermine");
             }

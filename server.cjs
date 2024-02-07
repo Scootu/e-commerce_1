@@ -54,7 +54,22 @@ app.post("/api/orders", async (req, res) => {
     //Write in google sheet API
 
     const newOrdersData = req.body;
-
+    // let orders = Object.values(newOrdersData[0]);
+    let orders = [];
+    // i do this because Object.values() doesn't work for some risent it's return an object !
+    orders.push(newOrdersData[0].billing_first_name);
+    orders.push(newOrdersData[0].billing_Last_name);
+    orders.push(newOrdersData[0].billing_Company_name);
+    orders.push(newOrdersData[0].billing_phone);
+    orders.push(newOrdersData[0].billing_State);
+    orders.push(newOrdersData[0].billing_city);
+    orders.push(newOrdersData[0].billing_address_1);
+    orders.push(newOrdersData[0].billing_address_2);
+    orders.push('planter pots');
+    orders.push(newOrdersData[0].productData.totalPrice);
+    orders.push(newOrdersData[0].productData.totalItems);
+    orders.push(newOrdersData[0].billing_email);
+    orders.push(newOrdersData[0].order_comments);
     // Insert the new order data into a MongoDB collection
     const database = client.db("planterBot");
     const collection = database.collection("NEWOrder");
@@ -77,36 +92,21 @@ app.post("/api/orders", async (req, res) => {
       const hours = currentDate.getHours();
       const minutes = currentDate.getMinutes();
       const seconds = currentDate.getSeconds();
-
+      orders.unshift(result.insertedIds[0]); // add id
+      orders.unshift(`${year}-${month}-${day} ${hours}:${minutes}:${seconds}`);
       const writeRows = await googleSheets.spreadsheets.values.append({
         auth,
         spreadsheetId,
         range: "Sheet1",
         valueInputOption: "USER_ENTERED",
         resource: {
-          values: [
-            [
-              `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`,
-              result.insertedIds[0],
-              newOrdersData._id,
-              newOrdersData.billing_Last_name,
-              newOrdersData.billing_first_name,
-              newOrdersData.billing_Company_name,
-              newOrdersData.billing_address_1,
-              newOrdersData.billing_address_2,
-              newOrdersData.billing_State,
-              newOrdersData.billing_city,
-              newOrdersData.billing_phone,
-              newOrdersData.billing_email,
-              newOrdersData.order_comments,
-              newOrdersData.intent,
-            ],
-          ],
+          values: [orders],
         },
       });
+
       res.status(201).json({
         message: "New orders added successfully",
-        data: newOrdersData,
+        data: orders,
         id: result.insertedIds,
       });
     } else {

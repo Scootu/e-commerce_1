@@ -58,6 +58,7 @@ export const Checkout = () => {
         return prev + current.nbItems;
       }, 0)
     );
+    // modifye data
   }, [productsData, taxes]);
   const billing = useRef();
   useEffect(() => {
@@ -402,7 +403,6 @@ export const Checkout = () => {
                         ? "bg-white inputShadow w-full text-[#333] outline-none outline-offset-2 border border-[#ddd] text-[0.97em] h-[2.7em] max-w-full px-[0.75em] mb-[1em] touch-manipulation "
                         : "bg-white inputShadow w-full text-[#333] outline-none outline-offset-2 border border-red-600 text-[0.97em] h-[2.7em] max-w-full px-[0.75em] mb-[1em] touch-manipulation "
                     }
-                    
                   />
                   {Object.hasOwn(inputErrorForm, "billing_email") && (
                     <p className="text-[0.875rem] -top-[10px] relative text-red-500 ">
@@ -545,6 +545,27 @@ export const Checkout = () => {
                     <p className="text-[.875rem]">
                       Pay with cash upon delivery.
                     </p>
+                    <input
+                      name="productData"
+                      defaultValue={JSON.stringify({
+                        totalPrice: productsData.reduce((prev, current) => {
+                          return (
+                            prev + current.prices[0].price * current.nbItems
+                          );
+                        }, 0),
+                        totalItems: productsData.reduce((prev, current) => {
+                          return prev + current.nbItems;
+                        }, 0),
+                        products: productsData.map((item) => {
+                          return {
+                            title: item.name,
+                            quantity: item.nbItems,
+                            price: item.prices[0].price,
+                          };
+                        }),
+                      })}
+                      style={{ display: "none" }}
+                    />
                     <button
                       className="mt-[1rem] py-0 px-[1.5rem] mb-[1rem] text-[1rem] h-[2.5rem] flex w-1/2 bg-[#0071dc] text-[#fff] font-bold items-center appearance-none border-0 rounded-[62.5rem] cursor-pointer justify-center whitespace-nowrap"
                       type="submit"
