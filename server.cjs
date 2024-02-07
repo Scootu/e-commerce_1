@@ -65,7 +65,15 @@ app.post("/api/orders", async (req, res) => {
     orders.push(newOrdersData[0].billing_city);
     orders.push(newOrdersData[0].billing_address_1);
     orders.push(newOrdersData[0].billing_address_2);
-    orders.push('planter pots');
+    orders.push(
+      newOrdersData[0].productData.products
+        .map(
+          (item) =>
+            `Title: ${item.title}, Quantity: ${item.quantity}, Price: ${item.price}`
+        )
+        .join("\n")
+    );
+
     orders.push(newOrdersData[0].productData.totalPrice);
     orders.push(newOrdersData[0].productData.totalItems);
     orders.push(newOrdersData[0].billing_email);
