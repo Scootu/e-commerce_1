@@ -13,11 +13,11 @@ is a e-commerce website for planter pots with
 -i use V0 for page featured and for the footer
 -next project , the first think i will focus on is the design
 here some images for the website
-![website_images/hero.png]
-![website_images/caruseul.png]
-![website_images/cart.png]
-![website_images/orderPage.png]
-![website_images/shopPanier.png]
+[![](website_images/hero.png)]
+![](website_images/caruseul.png)
+![](website_images/cart.png)
+![](website_images/orderPage.png)
+![](website_images/shopPanier.png)
 
 ->[live_demo]()
 
